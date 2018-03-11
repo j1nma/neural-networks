@@ -1,11 +1,5 @@
-# Prevent Octave from thinking that this
-# is a function file:
-
 1;
-
-# Simple perceptron
-
-# S 
+ 
 function salidasDeseadas = calcSD(entradas)
 for i = 1 : rows(entradas)
 
@@ -30,25 +24,32 @@ endfor
 endfunction
 
 # Initial W
-function rw = randomWeights(rows, cols)
-	rw = rand(rows,cols);
+function rw = randomWeights(outerNeurons, bits)
+	rw = rand(outerNeurons, bits);
 endfunction
 
 # Xi
 function combs = entryCombinations(bits)
 #https://stackoverflow.com/questions/15310078/permutations-with-repetition-of-length-different-from-input-vector-in-octave?rq=1
 
-cart  = nthargout ([1:bits], @ndgrid, [-1,1]);
+	cart  = nthargout ([1:bits], @ndgrid, [-1,1]);
 
-combs = cell2mat (cellfun (@(c) c(:), cart, "UniformOutput", false));
+	combs = cell2mat (cellfun (@(c) c(:), cart, "UniformOutput", false));
 
 endfunction
 
-function w = neuralnetwork(bits)
-rw = randomWeights(1,bits)
+function bv = biasVector(bias, bits)
+	bv = repmat(bias, 1, bits);
+endfunction
 
-combs = entryCombinations(bits)
+function o = neuralNetwork(bits)
 
-w = rw * transpose(combs)
+	w = randomWeights(1,bits)
+
+	a = entryCombinations(bits)
+
+	b = biasVector(0.5, bits)
+
+	o = sign(w*a(1,:)' + b(1));
 
 endfunction
