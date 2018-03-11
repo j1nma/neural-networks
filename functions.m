@@ -1,22 +1,22 @@
 1;
  
-function salidasDeseadas = calcSD(entradas)
-for i = 1 : rows(entradas)
+function wantedOutputs = calcWantedOutputs(inputs)
+for i = 1 : rows(inputs)
 
 	aux = 1;
 
-	for j = 1 : columns(entradas)
+	for j = 1 : columns(inputs)
 
-		if (entradas(i, j) == (-1))
+		if (inputs(i, j) == (-1))
 			aux = aux & 0;
 		endif
 
 	endfor
 
 	if (aux == 0)
-		salidasDeseadas(i, : ) = (-1);
+		wantedOutputs(i, : ) = (-1);
 	elseif
-		salidasDeseadas(i, : ) = 1;
+		wantedOutputs(i, : ) = 1;
 	endif
 
 endfor
@@ -42,14 +42,45 @@ function bv = biasVector(bias, bits)
 	bv = repmat(bias, 1, bits);
 endfunction
 
-function o = neuralNetwork(bits)
+function delta = neuralNetwork(bits, learningRate, activationFunc, limitIterations)
 
-	w = randomWeights(1,bits)
+	w = randomWeights(1,bits);
 
-	a = entryCombinations(bits)
+	a = entryCombinations(bits);
 
-	b = biasVector(0.5, bits)
+	b = biasVector(-0.5, bits);
 
-	o = sign(w*a(1,:)' + b(1));
+	sd = calcWantedOutputs(a);
+
+	error = 0;
+
+	iterations = 0;
+
+	do
+
+		for i = 1:pow2(bits)
+			o(i,1) = feval(activationFunc, w*a(i,:)' + b(1));
+
+  		endfor
+
+  		delta = sd - o
+
+  		if (any(delta)) 
+  			error = 1;
+  			w += delta'*a*learningRate
+  		else
+  			error = 0;
+  		endif
+
+  		iterations += 1;
+
+  	until (error == 0 || iterations == limitIterations);
+
+  	if(iterations == limitIterations)
+  		disp("limit reached");
+  	else
+  		disp('runs: ');
+  		disp(iterations);
+  	endif
 
 endfunction
