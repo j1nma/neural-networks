@@ -38,43 +38,50 @@ function combs = entryCombinations(bits)
 
 endfunction
 
-function bv = biasVector(bias, bits)
-	bv = repmat(bias, 1, bits);
-endfunction
 
 function w = neuralNetwork(bits, learningRate, activationFunc, limitIterations)
 
-	w = randomWeights(1,bits);
+	w = randomWeights(1,bits+1) - 0.5;
 
 	a = entryCombinations(bits);
 
-	b = biasVector(-0.5, bits);
-
 	s = calcWantedOutputs(a);
+
+	bias = -1*ones(pow2(bits),1);
+
+	a = horzcat(a,bias);
 
 	error = 0;
 
 	iterations = 0;
 
+
 	do
+		
+		for i = 1:pow2(bits) 
 
-		for i = 1:pow2(bits)
-			o(i) = feval(activationFunc, w*a(i,:)' + b(1));
-  		endfor
+			o(i) = feval(activationFunc, w*a(i,:)');
 
-  		delta = s - o';
+			delta = s(i) - o(i);
 
-  		if (any(delta)) 
-  			error = 1;
-  			deltaW = learningRate*delta'*a;
-  			w += deltaW;
-  		else
-  			error = 0;
-  		endif
+			if (delta != 0) 
+					error = 1;
+					deltaW = learningRate*delta*a(i,:)
+					w += deltaW;
+			else
+					error = 0;
+			endif
 
-  		iterations += 1;
+			iterations += 1;
 
-  	until (error == 0 || iterations == limitIterations);
+			if (iterations == limitIterations)
+				break;
+			endif
+
+		endfor
+
+	until (error == 0 || iterations == limitIterations);
+
 
   	if(iterations == limitIterations)
   		disp('Limit iterations reached!');
