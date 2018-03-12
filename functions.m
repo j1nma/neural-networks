@@ -15,7 +15,7 @@ for i = 1 : rows(inputs)
 
 	if (aux == 0)
 		wantedOutputs(i, : ) = (-1);
-	elseif
+	else
 		wantedOutputs(i, : ) = 1;
 	endif
 
@@ -42,7 +42,7 @@ function bv = biasVector(bias, bits)
 	bv = repmat(bias, 1, bits);
 endfunction
 
-function delta = neuralNetwork(bits, learningRate, activationFunc, limitIterations)
+function w = neuralNetwork(bits, learningRate, activationFunc, limitIterations)
 
 	w = randomWeights(1,bits);
 
@@ -50,7 +50,7 @@ function delta = neuralNetwork(bits, learningRate, activationFunc, limitIteratio
 
 	b = biasVector(-0.5, bits);
 
-	sd = calcWantedOutputs(a);
+	s = calcWantedOutputs(a);
 
 	error = 0;
 
@@ -59,15 +59,15 @@ function delta = neuralNetwork(bits, learningRate, activationFunc, limitIteratio
 	do
 
 		for i = 1:pow2(bits)
-			o(i,1) = feval(activationFunc, w*a(i,:)' + b(1));
-
+			o(i) = feval(activationFunc, w*a(i,:)' + b(1));
   		endfor
 
-  		delta = sd - o
+  		delta = s - o';
 
   		if (any(delta)) 
   			error = 1;
-  			w += delta'*a*learningRate
+  			deltaW = learningRate*delta'*a;
+  			w += deltaW;
   		else
   			error = 0;
   		endif
@@ -77,10 +77,10 @@ function delta = neuralNetwork(bits, learningRate, activationFunc, limitIteratio
   	until (error == 0 || iterations == limitIterations);
 
   	if(iterations == limitIterations)
-  		disp("limit reached");
+  		disp('Limit iterations reached!');
+  		disp(w);
   	else
-  		disp('runs: ');
-  		disp(iterations);
+  		printf('Runs: %d\n', iterations);
   	endif
 
 endfunction
