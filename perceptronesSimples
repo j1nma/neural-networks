@@ -1,12 +1,32 @@
-# Created by Octave 4.0.3, Wed Mar 07 12:18:19 2018 -03 <JuanmaAlonso@MacBook-Pro.local>
+# Created by Octave 4.0.3, Wed Mar 14 06:13:44 2018 -03 <JuanmaAlonso@MacBook-Pro-3.local>
+# name: a
+# type: matrix
+# rows: 4
+# columns: 3
+ -1 -1 -1
+ 1 -1 -1
+ -1 1 -1
+ 1 1 -1
+
+
 # name: ans
+# type: scalar
+0.7432833867189966
+
+
+# name: bias
 # type: matrix
 # rows: 4
 # columns: 1
  -1
  -1
- 1
- 1
+ -1
+ -1
+
+
+# name: bits
+# type: scalar
+2
 
 
 # name: entradas
@@ -17,6 +37,38 @@
  -1 1
  1 -1
  1 1
+
+
+# name: epochs
+# type: scalar
+0
+
+
+# name: i
+# type: scalar
+1
+
+
+# name: k
+# type: scalar
+3
+
+
+# name: o
+# type: matrix
+# rows: 1
+# columns: 4
+ 0 0 0 0
+
+
+# name: s
+# type: matrix
+# rows: 4
+# columns: 1
+ -1
+ -1
+ -1
+ 1
 
 
 # name: salidas
@@ -33,6 +85,13 @@
 # type: matrix
 # rows: 0
 # columns: 0
+
+
+# name: w
+# type: matrix
+# rows: 1
+# columns: 3
+ -0.2610544792630395 0.4533115590638446 0.4944449651664656
 
 
 # name: x

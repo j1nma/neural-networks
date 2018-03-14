@@ -1,14 +1,14 @@
 1;
  
-function wantedOutputs = calcWantedOutputs(inputs)
+function wantedOutputs = calcWantedOutputs(inputs, operation)
 for i = 1 : rows(inputs)
 
-	aux = 1;
+	aux = inputs(i, 1);
 
 	for j = 1 : columns(inputs)
 
 		if (inputs(i, j) == (-1))
-			aux = aux & 0;
+			aux = feval(operation,aux,0);
 		endif
 
 	endfor
@@ -39,55 +39,53 @@ function combs = entryCombinations(bits)
 endfunction
 
 
-function w = neuralNetwork(bits, learningRate, activationFunc, limitIterations)
+function w = neuralNetwork(bits, learningRate, activationFunc, operation, limitEpochs)
 
 	w = randomWeights(1,bits+1) - 0.5;
 
 	a = entryCombinations(bits);
 
-	s = calcWantedOutputs(a);
+	s = calcWantedOutputs(a, operation);
 
 	bias = -1*ones(pow2(bits),1);
 
 	a = horzcat(a,bias);
 
-	error = 0;
+	epochs = 0;
 
-	iterations = 0;
-
+	o = zeros(1,pow2(bits));
 
 	do
+
+		error = 0;
 		
-		for i = 1:pow2(bits) 
+		for i = randperm(pow2(bits)) 
 
 			o(i) = feval(activationFunc, w*a(i,:)');
 
 			delta = s(i) - o(i);
 
-			if (delta != 0) 
-					error = 1;
-					deltaW = learningRate*delta*a(i,:)
-					w += deltaW;
-			else
-					error = 0;
-			endif
+			if(delta != 0)
 
-			iterations += 1;
+				error = 1;
 
-			if (iterations == limitIterations)
-				break;
+				for k = 1:columns(a(i,:))
+					w(k) += learningRate*delta*a(i,k);
+				endfor
+
 			endif
 
 		endfor
 
-	until (error == 0 || iterations == limitIterations);
+		epochs += 1;
+
+	until (error == 0 || epochs == limitEpochs);
 
 
-  	if(iterations == limitIterations)
-  		disp('Limit iterations reached!');
-  		disp(w);
-  	else
-  		printf('Runs: %d\n', iterations);
+  	if(epochs == limitEpochs)
+  		disp('Limit epochs reached!');
   	endif
+
+  	printf('Runs: %d\n', epochs);
 
 endfunction
