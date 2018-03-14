@@ -49,11 +49,13 @@ function w = neuralNetwork(bits, learningRate, activationFunc, operation, limitE
 
 	bias = -1*ones(pow2(bits),1);
 
-	a = horzcat(a,bias);
+	a = horzcat(a,bias)
 
 	epochs = 0;
 
 	o = zeros(1,pow2(bits));
+
+	errEpochs = [];
 
 	do
 
@@ -77,10 +79,13 @@ function w = neuralNetwork(bits, learningRate, activationFunc, operation, limitE
 
 		endfor
 
+		% errEpochs = vertcat(errEpochs, sum(s' - feval(activationFunc, w*a')));
+
 		epochs += 1;
 
 	until (error == 0 || epochs == limitEpochs);
 
+	% line([1:epochs], errEpochs);
 
   	if(epochs == limitEpochs)
   		disp('Limit epochs reached!');
