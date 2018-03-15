@@ -49,7 +49,7 @@ function w = neuralNetwork(bits, learningRate, activationFunc, operation, limitE
 
 	bias = -1*ones(pow2(bits),1);
 
-	a = horzcat(a,bias)
+	a = horzcat(a,bias);
 
 	epochs = 0;
 
