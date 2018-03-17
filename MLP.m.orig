@@ -1,8 +1,10 @@
 1;
 
-
-function w = backpropagation(bits, patterns, targets, activationFunction, hiddenLayers, outputs, learningRate)
-
+<<<<<<< HEAD
+function w = backpropagation(bits, patterns, targets, activationFunc, layers, learningRate)
+=======
+function w = backpropagation(bits, patterns, targets, activationFunction, hiddenLayers, outputs)
+>>>>>>> 0582d1cc997d893e8def28062a6227aadcafcbe2
 
 	bias = -1 * ones(pow2(bits),1);
 	patterns = [bias, patterns];
@@ -49,8 +51,13 @@ function w = backpropagation(bits, patterns, targets, activationFunction, hidden
 
 	delta = cell(numberOfLayers,1);
 
+<<<<<<< HEAD
+	delta{numberOfLayers} = v{numberOfLayers}*(1-v{numberOfLayers}) * (target-v{m});
+  
+=======
 	delta{numberOfLayers} = derivativeFunction( h{numberOfLayers} ) * (target - v{m});
 
+>>>>>>> 0582d1cc997d893e8def28062a6227aadcafcbe2
 
 % 5. Calculate deltas for previous layers propagating errors backwards for each neuron
 % of each layer. m = M, M - 1, ..., 2
@@ -58,25 +65,36 @@ function w = backpropagation(bits, patterns, targets, activationFunction, hidden
 % 6. Update all weights
 
 	for m = numberOfLayers:2
-    	
-    	delta{m-1} = derivativeFunction( h{m} ) * (w{m}(i) * delta{m});
-
-    	for i= 1:rows(w{m}) 
-    	  for j= 1:columns(w{m})
-    	      deltaW = learningRate * delta{m}(i) * v{m-1}(j);
-    	      w{m}(i,j) = w{m}(i,j) + deltaW;
-    	  endfor
-    	endfor
+		
+<<<<<<< HEAD
+		delta{m-1} = v{m}*(1-v{m})*(w{m}(i)*delta{m});
+    
+    for i= 1:rows(w{m}) 
+      for j= 1:columns(w{m})
+          deltaW = learningRate * delta{m}(i) * v{m-1}(j);
+          w{m}(i,j) = w{m}(i,j) + deltaW;
+      endfor
+    endfor
 	endfor
   
-  	for i= 1:rows(w{1}) 
+  for i= 1:rows(w{1}) 
       for j= 1:columns(w{1})
           deltaW = learningRate * delta{1}(i) * inputPattern(j);
           w{1}(i,j) = w{1}(i,j) + deltaW;
-    	endfor
+      endfor
     endfor
+  
+=======
+		delta{m-1} = derivativeFunction( h{m} ) * (w{m}(i) * delta{m});
 
+	endfor
+
+% 6. Update all weights
+
+
+>>>>>>> 0582d1cc997d893e8def28062a6227aadcafcbe2
 % 7. Back to step 2 for next pattern
+%endfor
 
 endfunction
 
@@ -84,6 +102,11 @@ function w = mlp(bits, learningRate, activationFunction, operation, limitEpochs,
 	
 	derivativeFunction = setDerivative(activationFunction);
 	
-	w = backpropagation(bits, trainingSet(0), trainingSet(1), activationFunction, hiddenLayers, outputs, derivativeFunction, learningRate);
+	w = backpropagation(bits, trainingSet(0), trainingSet(1), activationFunction, hiddenLayers, outputs, derivativeFunction);
 
+<<<<<<< HEAD
+
+	w = backpropagation(bits, trainingSet(0), trainingSet(1), activationFunc, layers, learningRate);
+=======
+>>>>>>> 0582d1cc997d893e8def28062a6227aadcafcbe2
 endfunction
