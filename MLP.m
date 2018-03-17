@@ -1,18 +1,18 @@
 1;
 
-function w = backpropagation(bits, patterns, targets, activationFunc, layers)
+function w = backpropagation(bits, patterns, targets, activationFunction, hiddenLayers, outputs)
 
-	bias = -1*ones(pow2(bits),1);
+	bias = -1 * ones(pow2(bits),1);
 	patterns = [bias, patterns];
 
 % 1. Initialize weights with small random values
 	
-	% layers vector always passed as column Lx1
-	if(isrow(layers))
-		layers = layers';
+	% hiddenLayers vector always passed as column Lx1
+	if(isrow(hiddenLayers))
+		hiddenLayers = hiddenLayers';
 	endif
 
-	w = randomInitialWeights(layers);
+	w = randomInitialWeights(hiddenLayers, outputs);
 
 % 2. Choose a pattern and set it to be the entry layer
 	randomIndex = randi(rows(patterns));
@@ -21,7 +21,7 @@ function w = backpropagation(bits, patterns, targets, activationFunc, layers)
 
 % 3. Propagate output forward for each neuron of each layer upto the output layer
 
-	numberOfLayers = rows(layers);
+	numberOfLayers = rows(hiddenLayers);
 
 	h = cell(numberOfLayers,1);
 
@@ -29,7 +29,7 @@ function w = backpropagation(bits, patterns, targets, activationFunc, layers)
 	
 	for m = 1:numberOfLayers
 		
-		for i = 1:layers(m)
+		for i = 1:hiddenLayers(m)
 
 			if(m == 1)
 				h{m}(i) = w{m}(i) * inputPattern';			
@@ -37,7 +37,7 @@ function w = backpropagation(bits, patterns, targets, activationFunc, layers)
 				h{m}(i) = w{m}(i) * v{m-1};
 			endif
 
-			v{m}(i) = activationFunc( h{m}(i) );
+			v{m}(i) = activationFunction( h{m}(i) );
 
 		endfor
 
@@ -47,7 +47,7 @@ function w = backpropagation(bits, patterns, targets, activationFunc, layers)
 
 	deltas = cell(numberOfLayers,1);
 
-	delta{numberOfLayers} = v{numberOfLayers}*(1-v{numberOfLayers}) * (target-v{m});
+	delta{numberOfLayers} = derivativeFunction( h{numberOfLayers} ) * (target - v{m});
 
 
 % 5. Calculate deltas for previous layers propagating errors backwards for each neuron
@@ -56,20 +56,22 @@ function w = backpropagation(bits, patterns, targets, activationFunc, layers)
 
 	for m = numberOfLayers:2
 		
-		delta{m-1} = v{m}*(1-v{m})*(w{m}(i)*delta{m-1});
+		delta{m-1} = derivativeFunction( h{m} ) * (w{m}(i) * delta{m});
 
 	endfor
 
-
 % 6. Update all weights
+
+
 % 7. Back to step 2 for next pattern
 endfor
 
 endfunction
 
-function w = mlp(bits, learningRate, activationFunc, operation, limitEpochs, trainingSet, layers)
+function w = mlp(bits, learningRate, activationFunction, operation, limitEpochs, trainingSet, hiddenLayers, outputs)
 	
+	derivativeFunction = setDerivative(activationFunction);
+	
+	w = backpropagation(bits, trainingSet(0), trainingSet(1), activationFunction, hiddenLayers, outputs, derivativeFunction);
 
-
-	w = backpropagation(bits, trainingSet(0), trainingSet(1), activationFunc, layers);
 endfunction
