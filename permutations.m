@@ -1,0 +1,1 @@
+clcclear allfilename = 'terrain11.data';delimiterIn = ' ';headerlinesIn = 1;A = importdata(filename,delimiterIn,headerlinesIn);x=A.data(:,1);y=A.data(:,2);z=A.data(:,3);v = randperm(441); v1 = v(1:200)p = A.data(v1, :)entradas = p(:,1:2)salidasDeseadas = p(:, 3)

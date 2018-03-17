@@ -17,6 +17,7 @@ function w = backpropagation(bits, patterns, targets, activationFunction, hidden
 	w = randomInitialWeights(hiddenLayers, outputs);
 
 % 2. Choose a pattern and set it to be the entry layer
+  for p = 1:200
 	randomIndex = randi(rows(patterns));
 	inputPattern = patterns(randomIndex,:);
 	target = targets(randomIndex,:);
@@ -77,7 +78,7 @@ function w = backpropagation(bits, patterns, targets, activationFunction, hidden
     endfor
 
 % 7. Back to step 2 for next pattern
-
+  endfor
 endfunction
 
 function w = mlp(bits, learningRate, activationFunction, operation, limitEpochs, trainingSet, hiddenLayers, outputs)
