@@ -23,7 +23,7 @@ function w = backpropagation(bits, patterns, targets, activationFunc, layers, le
 
 	numberOfLayers = rows(layers);
 
-	h = cell(numberOfLayers,1); %hi
+	h = cell(numberOfLayers,1);
 
 	v = cell(numberOfLayers,1); 
 	
