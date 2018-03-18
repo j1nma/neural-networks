@@ -1,19 +1,24 @@
-function W = randomInitialWeights(layers, inputs)
+function w = randomInitialWeights(hiddenLayers, numberOfInputsIncludedBias, numberOfOutputs)
 	
-	numberOfLayers = rows(layers);
+	numberOfHiddenLayers = length(hiddenLayers);
 
-	W = cell(numberOfLayers, 1);
+	% + 1 for output layer
+	w = cell(numberOfHiddenLayers + 1, 1);
 
-	for i = 1:numberOfLayers
+	for i = 1:numberOfHiddenLayers
 
-		numberOfNeuronsInLayer = layers(i);
+		numberOfNeuronsInHiddenLayer = hiddenLayers(i);
 
 			if(i == 1)
-				W{i} = rand(numberOfNeuronsInLayer, 1 + inputs) - 0.5;
+				w{i} = rand(numberOfNeuronsInHiddenLayer, numberOfInputsIncludedBias) - 0.5;
 			else
-				W{i} = rand(numberOfNeuronsInLayer, 1 + layers(i-1)) - 0.5;
+				%  + 1 for bias
+				w{i} = rand(numberOfNeuronsInHiddenLayer, 1 + hiddenLayers(i-1)) - 0.5;
 			endif
 
 	endfor
+
+	% Output layer
+	w{numberOfHiddenLayers + 1} = rand(numberOfOutputs, 1 + hiddenLayers(numberOfHiddenLayers)) - 0.5;
 
 endfunction

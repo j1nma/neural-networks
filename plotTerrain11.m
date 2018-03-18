@@ -1,1 +1,1 @@
-clcclear allclose allfilename = 'terrain11.data';delimiterIn = ' ';headerlinesIn = 1;A = importdata(filename,delimiterIn,headerlinesIn);figure(1)x=A.data(:,1);y=A.data(:,2);z=A.data(:,3);plot3(x,y,z,'.')figure(2)surf(x,y,z)%plot3(x,y,z)
+clcclear allclose allfilename = 'terrain11.data';delimiterIn = ' ';headerlinesIn = 1;A = importdata(filename, delimiterIn, headerlinesIn);figure(1)x=A.data(:,1);y=A.data(:,2);z=A.data(:,3);plot3(x,y,z,'.')% figure(2)% surf(x,y,z)%plot3(x,y,z)
