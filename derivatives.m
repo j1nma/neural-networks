@@ -9,7 +9,7 @@ function g = exponentialSigmoidDerivate(z)
 endfunction
 
 function g = tanhDerivate(z)
-	g = 1 - z*z;
+	g = 1 - (tanh(z) * tanh(z));
 endfunction
 
 function f = setDerivative(activationFunction)

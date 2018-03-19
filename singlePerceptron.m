@@ -1,15 +1,24 @@
 1;
  
 function wantedOutputs = calcWantedOutputs(inputs, operation)
+
 for i = 1 : rows(inputs)
 
 	aux = inputs(i, 1);
 
-	for j = 1 : columns(inputs)
+	if (aux == (-1))
+		aux = 0;
+	endif
 
-		if (inputs(i, j) == (-1))
-			aux = feval(operation,aux,0);
+	for j = 2 : columns(inputs)
+
+		aux2 = inputs(i, j);
+
+		if (aux2 == (-1))
+			aux2 = 0;
 		endif
+
+		aux = feval(operation, aux, aux2);
 
 	endfor
 

@@ -4,36 +4,41 @@ clc
 clear all
 close all
 
+% hold off
+
 % Parse data
 filename = 'terrain11.data';
 delimiterIn = ' ';
 headerlinesIn = 1;
 A = importdata(filename, delimiterIn, headerlinesIn);
 
-figure(1)
+% figure(1)
 x=A.data(:,1);
-y=A.data(:,2);
-z=A.data(:,3);
-plot3(x,y,z,'.')
+% y=A.data(:,2);
+% z=A.data(:,3);
+% plot3(x,y,z,'.');
+
+% hold on
 
 % Keep random subset for training
-v = randperm(length(x)); 
+rp = randperm(length(x)); 
 trainingSetSize = length(x);
-v1 = v(1:trainingSetSize);
-p = A.data(v1, :);
+rts = rp(1:trainingSetSize);
+p = A.data(rts, :);
 
+derivatives
+
+multiLayerPerceptron
 
 % Parameters
-patterns = p(:,1:2);
+global patterns = p(:,1:2);
 
-targets = p(:,3);
+global targets = p(:,3);
 
-activationFunction = @exponentialSigmoid;
+global hiddenLayers = [6 2];
 
-hiddenLayers = [6 6 6 6 6];
+global learningRate = 0.1;
 
-learningRate = 0.1;
+global activationFunction = @tanh;
 
-limitEpochs = 100;
-
-% w = mlp(patterns, targets, activationFunction, hiddenLayers, learningRate)
+global w = mlp(patterns, targets, activationFunction, hiddenLayers, learningRate);
