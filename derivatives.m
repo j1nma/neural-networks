@@ -17,5 +17,7 @@ function f = setDerivative(activationFunction)
 		f = @tanhDerivate;
 	elseif (activationFunction == @exponentialSigmoid)
 		f = @exponentialSigmoidDerivate;
+	else
+		error('activationFunction not found')
 	endif
 endfunction

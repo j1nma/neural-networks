@@ -47,4 +47,6 @@ global epochs = 6500;
 
 global epsilon = 0.1;
 
+global trainingType = 'batch';
+
 global w = mlp(patterns, targets, activationFunction, hiddenLayers, learningRate, epochs, epsilon);
