@@ -22,13 +22,15 @@ x=A.data(:,1);
 
 % Keep random subset for training
 rp = randperm(length(x)); 
-trainingSetSize = length(x);
+trainingSetSize = length(x)/2;
 rts = rp(1:trainingSetSize);
 p = A.data(rts, :);
 
 derivatives
 
 multiLayerPerceptron
+
+errorFunctions
 
 % Parameters
 global patterns = p(:,1:2);
@@ -41,6 +43,8 @@ global learningRate = 0.1;
 
 global activationFunction = @tanh;
 
-global epochs = 100;
+global epochs = 6500;
 
-global w = mlp(patterns, targets, activationFunction, hiddenLayers, learningRate, epochs);
+global epsilon = 0.1;
+
+global w = mlp(patterns, targets, activationFunction, hiddenLayers, learningRate, epochs, epsilon);

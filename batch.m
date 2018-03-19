@@ -1,6 +1,4 @@
-1;
-
-function w = backpropagation(patterns, targets, activationFunction, hiddenLayers, derivativeFunction, learningRate)
+function w = backpropagationBatch(patterns, targets, activationFunction, hiddenLayers, derivativeFunction, learningRate)
 
 	global calculatedOutputs;
 
@@ -98,55 +96,5 @@ function w = backpropagation(patterns, targets, activationFunction, hiddenLayers
 
 		% 7. Back to step 2 for next pattern
   	endfor
-
-endfunction
-
-function w = mlp(patterns, targets, activationFunction, hiddenLayers, learningRate, limitEpochs, epsilon)
-
-	derivativeFunction = setDerivative(activationFunction);
-
-	% Add bias to patterns
-	bias = -1 * ones(length(patterns),1);
-	patterns = [bias, patterns];
-
-	if(isrow(hiddenLayers))
-		hiddenLayers = hiddenLayers';
-	endif
-
-	epochs = 0;
-
-	global calculatedOutputs;
-
-	global w;
-
-	calculatedOutputs = zeros(rows(targets),1);
-
-	% 1. Initialize weights with small random values
-	numberOfInputsIncludedBias = columns(patterns);
-	numberOfOutputs = columns(targets);
-	w = randomInitialWeights(hiddenLayers, numberOfInputsIncludedBias, numberOfOutputs);
-
-	do
-
-		w = backpropagation(patterns, targets, activationFunction, hiddenLayers, derivativeFunction, learningRate);
-
-		epochs += 1;
-
-	until((limitError(epsilon, calcError(calculatedOutputs, targets)) == 0) || epochs == limitEpochs)
-
-	% epochs
-
-	% limitError(epsilon, calcError(calculatedOutputs, targets))
-
-	% error = calcError(calculatedOutputs, targets)
-
-	% plot(1:epochs,totalLearningError,'g.');
-
-	calculatedOutputs
-
-	% plots for train.m
-	% x = patterns(:, 2);
-	% y = patterns(:, 3);
-	% plot3(x, y, calculatedOutputs, '.');
 
 endfunction
