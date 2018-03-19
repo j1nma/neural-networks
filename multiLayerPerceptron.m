@@ -1,6 +1,10 @@
 1;
 
-function w = backpropagationWithOldWeigths(w, patterns, targets, activationFunction, hiddenLayers, derivativeFunction, learningRate)
+function w = backpropagationWithOldWeigths(patterns, targets, activationFunction, hiddenLayers, derivativeFunction, learningRate)
+
+	global w;
+
+	% w;
 
 	% 1. Initialize weights with small random values
 	
@@ -8,16 +12,13 @@ function w = backpropagationWithOldWeigths(w, patterns, targets, activationFunct
 
 	numberOfOutputs = columns(targets);
 
-
 	% 2. Choose a pattern and set it to be the entry layer
 
-	numberOfPatterns = length(patterns);
+	numberOfPatterns = rows(patterns);
 
 	layers = vertcat(hiddenLayers, numberOfOutputs);
 
 	numberOfLayers = rows(layers);
-
-	calculatedOutputs = targets;
 
   	for p = 1:numberOfPatterns
 
@@ -53,25 +54,26 @@ function w = backpropagationWithOldWeigths(w, patterns, targets, activationFunct
 		endfor
 
 		calculatedOutputs(p,:) = v{numberOfLayers};
-
+		% if(isequaln(calculatedOutputs(p, :), NaN))
+		% 	keyboard();
+		% endif
 		% 4. Calculate deltas between output layer and wanted output
 
-		delta = cell(numberOfLayers,1);
+		delta = cell(numberOfLayers, 1);
 
 		delta{numberOfLayers} = arrayfun(derivativeFunction, h{numberOfLayers}) * (target - v{numberOfLayers});
 
-
-		% 5. Calculate deltas for previous layers propagating errors backwards for each neuron
-		% of each layer. m = M, M - 1, ..., 2
+	% 5. Calculate deltas for previous layers propagating errors backwards for each neuron
+	% of each layer. m = M, M - 1, ..., 2
 		
 
-		for m = numberOfLayers:-1:2
-
+	for m = numberOfLayers:-1:2
 
 			for i = 1:layers(m-1)
 				% First column of w is bias
 
     			delta{m-1}(i) = derivativeFunction(h{m-1}(i)) * (w{m}(:, i+1)' * delta{m}');
+    			keyboard();
 
     		endfor
 
@@ -83,6 +85,10 @@ function w = backpropagationWithOldWeigths(w, patterns, targets, activationFunct
     		      deltaW = learningRate * delta{m}(i) * [-1 v{m-1}](j);
     
     		      w{m}(i,j) = w{m}(i,j) + deltaW;
+
+    			%if(isequaln(w{m}(i,j),Inf))
+					% keyboard();
+				% endif
     
     		  endfor
     
@@ -92,24 +98,25 @@ function w = backpropagationWithOldWeigths(w, patterns, targets, activationFunct
   	
   		% 6. Update first weights
   		for i= 1:rows(w{1}) 
-    	  for j= 1:columns(w{1})
-    	      deltaW = learningRate * delta{1}(i) * inputPattern(j);
-    	      w{1}(i,j) = w{1}(i,j) + deltaW;
+
+    		 for j= 1:columns(w{1})
+    		      
+    		     deltaW = learningRate * delta{1}(i) * inputPattern(j);
+    		      
+    		     w{1}(i,j) = w{1}(i,j) + deltaW;
+
     		endfor
+
     	endfor
 
 		% 7. Back to step 2 for next pattern
   	endfor
 
-  	figure(1)
-	x=patterns(:,2);
-	y=patterns(:,3);
-	z=calculatedOutputs(:,1)
-	plot3(x,y,z,'.')
-
 endfunction
 
-function w = backpropagation(patterns, targets, activationFunction, hiddenLayers, derivativeFunction, learningRate)
+function w = backpropagation(calculatedOutputs, patterns, targets, activationFunction, hiddenLayers, derivativeFunction, learningRate)
+
+	global calculatedOutputs;
 
 	% 1. Initialize weights with small random values
 	
@@ -119,6 +126,8 @@ function w = backpropagation(patterns, targets, activationFunction, hiddenLayers
 
 	w = randomInitialWeights(hiddenLayers, numberOfInputsIncludedBias, numberOfOutputs);
 
+	% keyboard();
+
 	% 2. Choose a pattern and set it to be the entry layer
 
 	numberOfPatterns = length(patterns);
@@ -126,8 +135,6 @@ function w = backpropagation(patterns, targets, activationFunction, hiddenLayers
 	layers = vertcat(hiddenLayers, numberOfOutputs);
 
 	numberOfLayers = rows(layers);
-
-	calculatedOutputs = targets;
 
   	for p = 1:numberOfPatterns
 
@@ -163,6 +170,9 @@ function w = backpropagation(patterns, targets, activationFunction, hiddenLayers
 		endfor
 
 		calculatedOutputs(p,:) = v{numberOfLayers};
+		if(isequaln(calculatedOutputs(p, :), NaN))
+			keyboard();
+		endif
 
 		% 4. Calculate deltas between output layer and wanted output
 
@@ -211,16 +221,10 @@ function w = backpropagation(patterns, targets, activationFunction, hiddenLayers
 		% 7. Back to step 2 for next pattern
   	endfor
 
-  	figure(1)
-	x=patterns(:,2);
-	y=patterns(:,3);
-	z=calculatedOutputs(:,1)
-	plot3(x,y,z,'.')
-
 endfunction
 
 function w = mlp(patterns, targets, activationFunction, hiddenLayers, learningRate)
-	
+
 	derivativeFunction = setDerivative(activationFunction);
 
 	% Add bias to patterns
@@ -231,13 +235,41 @@ function w = mlp(patterns, targets, activationFunction, hiddenLayers, learningRa
 		hiddenLayers = hiddenLayers';
 	endif
 
-	w = backpropagation(patterns, targets, activationFunction, hiddenLayers, derivativeFunction, learningRate);
+	global calculatedOutputs = zeros(rows(targets),1);
 
-	for i = 1:50
-	
-	w = backpropagationWithOldWeigths(w, patterns, targets, activationFunction, hiddenLayers, derivativeFunction, learningRate);
+	global w;
 
-	endfor
+	epochs = 2;
 
+	w = backpropagation(calculatedOutputs, patterns, targets, activationFunction, hiddenLayers, derivativeFunction, learningRate);
+
+	for i = 1:epochs
+
+		w = backpropagationWithOldWeigths(patterns, targets, activationFunction, hiddenLayers, derivativeFunction, learningRate);
+
+	end
+
+	calculatedOutputs
+
+	% numberOfInputsIncludedBias = columns(patterns);
+	% numberOfOutputs = columns(targets);
+	% global w = randomInitialWeights(hiddenLayers, numberOfInputsIncludedBias, numberOfOutputs)
+
+	% keyboard();
+
+	% global calculatedOutputs = zeros(rows(targets),1);
+
+	% for i = 1:5
+		
+	% 	i
+	% 	w = backpropagationWithOldWeigths(patterns, targets, activationFunction, hiddenLayers, derivativeFunction, learningRate, calculatedOutputs);
+			
+	% endfor
+
+	% 	x=patterns(:,2);
+	% 	y=patterns(:,3);
+	% 	z=calculatedOutputs(:,1)
+
+	% 	plot3(x,y,z,'rx')
 
 endfunction
