@@ -245,6 +245,14 @@ function w = mlp(patterns, targets, activationFunction, hiddenLayers, learningRa
 
 	until((limitError(epsilon, calcError(calculatedOutputs, targets)) == 0) || epochs == limitEpochs)
 
+	epochs
+
+	limitError(epsilon, calcError(calculatedOutputs, targets))
+
+	error = calcError(calculatedOutputs, targets)
+
+	%plot(1:epochs,totalLearningError,'g.');
+
 	calculatedOutputs
 
 endfunction

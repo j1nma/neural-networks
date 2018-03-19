@@ -13,7 +13,7 @@ multiLayerPerceptron
 errorFunctions
 
 % Parameters
-global hiddenLayers = [2];
+global hiddenLayers = [5];
 
 global learningRate = 0.1;
 
@@ -29,6 +29,6 @@ global targets = calcWantedOutputs(patterns, @bitxor)
 
 global limitEpochs = 6500;
 
-global epsilon = 0.1; 
+global epsilon = 0.001; 
 
 finalW = mlp(patterns, targets, activationFunction, hiddenLayers, learningRate, limitEpochs, epsilon)
