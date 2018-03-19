@@ -41,4 +41,6 @@ global learningRate = 0.1;
 
 global activationFunction = @tanh;
 
-global w = mlp(patterns, targets, activationFunction, hiddenLayers, learningRate);
+global epochs = 100;
+
+global w = mlp(patterns, targets, activationFunction, hiddenLayers, learningRate, epochs);

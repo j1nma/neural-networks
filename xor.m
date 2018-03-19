@@ -10,6 +10,8 @@ derivatives
 
 multiLayerPerceptron
 
+errorFunctions
+
 % Parameters
 global hiddenLayers = [2];
 
@@ -21,8 +23,12 @@ global bits = 2;
 
 global patterns = entryCombinations(bits)
 
-global withbias = horzcat(-1*ones(4,1), patterns)
+global withbias = horzcat(-1*ones(pow2(bits),1), patterns)
 
 global targets = calcWantedOutputs(patterns, @bitxor)
 
-finalW = mlp(patterns, targets, activationFunction, hiddenLayers, learningRate)
+global limitEpochs = 6500;
+
+global epsilon = 0.1; 
+
+finalW = mlp(patterns, targets, activationFunction, hiddenLayers, learningRate, limitEpochs, epsilon)
