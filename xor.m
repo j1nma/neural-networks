@@ -12,12 +12,16 @@ multiLayerPerceptron
 
 errorFunctions
 
+learningRateFunctions
+
+
+
 % Parameters
 global hiddenLayers = [2];
 
 global learningRate = 0.1;
 
-global activationFunction = @exponentialSigmoid;
+global activationFunction = @tanh;
 
 global bits = 2;
 
@@ -33,4 +37,4 @@ global epsilon = 0.001;
 
 global trainingType = 'incremental';
 
-finalW = mlp(patterns, targets, activationFunction, hiddenLayers, learningRate, limitEpochs, epsilon, trainingType)
+global w = mlp(patterns, targets, activationFunction, hiddenLayers, learningRate, limitEpochs, epsilon, trainingType)
