@@ -14,8 +14,6 @@ function w = mlp(patterns, targets, activationFunction, hiddenLayers, learningRa
 
 	global numberOfLayers;
 
-	global targets;
-
 	global trainingType;
 
 	if(isrow(hiddenLayers))
@@ -39,7 +37,7 @@ function w = mlp(patterns, targets, activationFunction, hiddenLayers, learningRa
 
 			epochs += 1;
 
-		until((limitError() == 0) || epochs == limitEpochs)
+		until((limitError(targets) == 0) || epochs == limitEpochs)
 
 		
 		calculatedOutputs
@@ -51,9 +49,9 @@ function w = mlp(patterns, targets, activationFunction, hiddenLayers, learningRa
 
 			epochs += 1;
 
-			updateLearningRate(calcError());
+			updateLearningRate(calcError(targets));
 
-		until((limitError() == 0) || epochs == limitEpochs)
+		until((limitError(targets) == 0) || epochs == limitEpochs)
 
 		% calculatedOutputs
 
@@ -65,9 +63,9 @@ function w = mlp(patterns, targets, activationFunction, hiddenLayers, learningRa
 
 	% epochs
 
-	% limitError()
+	% limitError(targets)
 
-	% error = calcError()
+	% error = calcError(targets)
 
 	% plot(1:epochs,totalLearningError,'g.');
 	% plot3(patterns(:,2),patterns(:,3),calculatedOutputs,'b*');

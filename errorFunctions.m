@@ -1,9 +1,8 @@
 1;
 
-function error = calcError()
+function error = calcError(targets)
 
 	global calculatedOutputs;
-	global targets;
 
 	error = calculatedOutputs;
 
@@ -13,10 +12,9 @@ function error = calcError()
 
 endfunction
 
-function a = limitError()
+function a = limitError(targets)
 
 	global calculatedOutputs;
-	global targets;
 	global epsilon;
 
 	a = 0;
@@ -35,12 +33,11 @@ function a = limitError()
 
 endfunction
 
-function error = totalError()
+function error = totalError(targets)
 
 	global calculatedOutputs;
-	global targets;
 
-	errorVector = calcError();
+	errorVector = calcError(targets);
 	error = 0;
 	for i = 1 : errorVector
 		error += errorVector(i);

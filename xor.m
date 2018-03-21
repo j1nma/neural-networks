@@ -13,20 +13,22 @@ errorFunctions
 
 learningRateFunctions
 
+multiLayerPerceptron
+
 % Extra parameters
 bits = 2;
 
 % Keep random subset for training and testing
 setSizePercentage = 0.5;
 patterns = entryCombinations(bits);
-trainSet = randomSubset(patterns, setSizePercentage);
+
 testPatterns = randomSubset(patterns, setSizePercentage);
 testTargets = calcWantedOutputs(testPatterns, @bitxor);
 
 % Parameters
-global patterns = trainSet
+global trainPatterns = randomSubset(patterns, setSizePercentage);
 
-global targets = calcWantedOutputs(patterns, @bitxor);
+global trainTargets = calcWantedOutputs(trainPatterns, @bitxor);
 
 global activationFunction = @tanh;
 
@@ -40,10 +42,10 @@ global epsilon = 0.001;
 
 global trainingType = 'incremental';
 
-patterns = preprocessing(patterns);
+trainPatterns = preprocessing(trainPatterns);
 testPatterns = preprocessing(testPatterns);
 
-global trainW = mlp(patterns, targets, activationFunction, hiddenLayers, learningRate, limitEpochs, epsilon, trainingType);
+global trainW = mlp(trainPatterns, trainTargets, activationFunction, hiddenLayers, learningRate, limitEpochs, epsilon, trainingType);
 
 % TEST %
 testCalculatedOutputs = evaluateNetwork(testPatterns, testTargets, activationFunction, trainW, hiddenLayers)
