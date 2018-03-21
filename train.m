@@ -27,15 +27,17 @@ multiLayerPerceptron
 
 % Keep random subset for training and testing
 setSizePercentage = 0.50;
+
 trainSet = randomSubset(A.data(:,:), setSizePercentage);
 testSet = randomSubset(A.data(:,:), setSizePercentage);
+
 testPatterns = testSet(:,1:2);
 testTargets = testSet(:,3);
 
 % Parameters
-global patterns = trainSet(:,1:2);
+global trainPatterns = trainSet(:,1:2);
 
-global targets = trainSet(:,3);
+global trainTargets = trainSet(:,3);
 
 global activationFunction = @tanh;
 
@@ -43,24 +45,25 @@ global hiddenLayers = [6 2];
 
 global learningRate = 0.1;
 
-global epochs = 1000;
+global epochs = 200;
 
 global epsilon = 0.001;
 
 global trainingType = 'incremental';
 
-global normalizedPatterns = (activationFunction == @exponentialSigmoid);
+% Consider normalizing for exponentialSigmoid activation function
+global normalizedPatterns = 1;
 
-patterns = preprocessing(patterns);
+trainPatterns = preprocessing(trainPatterns);
 testPatterns = preprocessing(testPatterns);
 
 % Normalize patterns if activationFunction == @exponentialSigmoid
 if(logical(normalizedPatterns))
-	[patterns, mP, sP] = normalizePatterns(patterns);
-	testPatterns = normalizeWithParameters(testPatterns, mP, sP)
+	[trainPatterns, mP, sP] = normalizePatterns(trainPatterns);
+	testPatterns = normalizeWithParameters(testPatterns, mP, sP);
 endif
 
-global trainW = mlp(patterns, targets, activationFunction, hiddenLayers, learningRate, epochs, epsilon);
+global trainW = mlp(trainPatterns, trainTargets, activationFunction, hiddenLayers, learningRate, epochs, epsilon);
 
 % TEST %
 testCalculatedOutputs = evaluateNetwork(testPatterns, testTargets, activationFunction, trainW, hiddenLayers);
