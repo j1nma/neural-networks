@@ -6,12 +6,9 @@ function w = backpropagation(patterns, targets, activationFunction, hiddenLayers
 
 	global learningRate;
 
-	% w;
-
-	numberOfOutputs = columns(targets);
-
 	% 2. Choose a pattern and set it to be the entry layer
 	numberOfPatterns = rows(patterns);
+	numberOfOutputs = columns(targets);
 	layers = vertcat(hiddenLayers, numberOfOutputs);
 	numberOfLayers = rows(layers);
 
@@ -56,22 +53,22 @@ function w = backpropagation(patterns, targets, activationFunction, hiddenLayers
 
 		delta{numberOfLayers} = arrayfun(derivativeFunction, h{numberOfLayers}) * (target - v{numberOfLayers});
 
-	% 5. Calculate deltas for previous layers propagating errors backwards for each neuron
-	% of each layer. m = M, M - 1, ..., 2
-	for m = numberOfLayers:-1:2
-
-			numberOfNeuronsInLayer = layers(m-1);
-
-			for i = 1:numberOfNeuronsInLayer
+		% 5. Calculate deltas for previous layers propagating errors backwards for each neuron
+		% of each layer. m = M, M - 1, ..., 2
+		for m = numberOfLayers:-1:2
+	
+				numberOfNeuronsInLayer = layers(m-1);
+	
+				for i = 1:numberOfNeuronsInLayer
 				% First column of w is bias
 
     			delta{m-1}(i) = derivativeFunction(h{m-1}(i)) * (w{m}(:, i+1)' * delta{m}');
     			% keyboard();
-
-    		endfor
-
-    		% 6. Update all weights
-    		for i = 1:rows(w{m})
+	
+    			endfor
+	
+    			% 6. Update all weights
+    			for i = 1:rows(w{m})
 
     		  for j = 1:columns(w{m})
     
@@ -80,25 +77,25 @@ function w = backpropagation(patterns, targets, activationFunction, hiddenLayers
     		      w{m}(i,j) = w{m}(i,j) + deltaW;
     
     		  endfor
-    
-    		endfor
-
+    	
+    			endfor
+	
 		endfor
-  	
+  		
   		% 6. Update first weights
   		for i= 1:rows(w{1}) 
 
-    		 for j= 1:columns(w{1})
+    		for j= 1:columns(w{1})
     		      
-    		     deltaW = learningRate * delta{1}(i) * inputPattern(j);
+    			deltaW = learningRate * delta{1}(i) * inputPattern(j);
     		      
-    		     w{1}(i,j) = w{1}(i,j) + deltaW;
+    			w{1}(i,j) = w{1}(i,j) + deltaW;
 
     		endfor
-
+	
     	endfor
-
-		% 7. Back to step 2 for next pattern
+	
+	% 7. Back to step 2 for next pattern
   	endfor
 
 endfunction

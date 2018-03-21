@@ -1,5 +1,7 @@
 1;
 
+learningRateFunctions
+
 function w = mlp(patterns, targets, activationFunction, hiddenLayers, learningRate, limitEpochs, epsilon, trainingType)
 
 	global calculatedOutputs;
@@ -14,15 +16,13 @@ function w = mlp(patterns, targets, activationFunction, hiddenLayers, learningRa
 
 	global targets;
 
-	derivativeFunction = setDerivative(activationFunction);
-
-	% Add bias to patterns
-	bias = -1 * ones(rows(patterns),1);
-	patterns = [bias, patterns];
+	global trainingType;
 
 	if(isrow(hiddenLayers))
 		hiddenLayers = hiddenLayers';
 	endif
+
+	derivativeFunction = setDerivative(activationFunction);
 
 	epochs = 0;
 
@@ -55,9 +55,9 @@ function w = mlp(patterns, targets, activationFunction, hiddenLayers, learningRa
 
 		until((limitError() == 0) || epochs == limitEpochs)
 
-	
+		% calculatedOutputs
 
-		calculatedOutputs
+		% finalW = w
 	else
 		error('Wrong training type');
 	endif		
@@ -70,12 +70,6 @@ function w = mlp(patterns, targets, activationFunction, hiddenLayers, learningRa
 	% error = calcError()
 
 	% plot(1:epochs,totalLearningError,'g.');
-
-
-
-	% plots for train.m
-	% x = patterns(:, 2);
-	% y = patterns(:, 3);
-	% plot3(x, y, calculatedOutputs, '.');
+	% plot3(patterns(:,2),patterns(:,3),calculatedOutputs,'b*');
 
 endfunction

@@ -5,7 +5,7 @@ function g = exponentialSigmoid(z)
 endfunction
 
 function g = exponentialSigmoidDerivate(z)
-	g = z*(1-z);
+	g = exponentialSigmoid(z)*(1-exponentialSigmoid(z));
 endfunction
 
 function g = tanhDerivate(z)
