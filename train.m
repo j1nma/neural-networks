@@ -45,7 +45,7 @@ global hiddenLayers = [6 2];
 
 global learningRate = 0.1;
 
-global epochs = 200;
+global epochs = 100;
 
 global epsilon = 0.001;
 
@@ -68,5 +68,5 @@ global trainW = mlp(trainPatterns, trainTargets, activationFunction, hiddenLayer
 % TEST %
 testCalculatedOutputs = evaluateNetwork(testPatterns, testTargets, activationFunction, trainW, hiddenLayers);
 
-plot3(testPatterns(:,2),testPatterns(:,3),testCalculatedOutputs,'rx');
+plot3(testPatterns(:,2), testPatterns(:,3), testCalculatedOutputs, 'rx');
 % END TEST %
