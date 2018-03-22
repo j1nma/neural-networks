@@ -2,19 +2,13 @@
 
 learningRateFunctions
 
-function w = mlp(patterns, targets, activationFunction, hiddenLayers, learningRate, limitEpochs, epsilon, trainingType)
+function w = mlp(patterns, targets, activationFunction, hiddenLayers, learningRate, limitEpochs, epsilon, trainingType, momentum)
 
 	global calculatedOutputs;
 
 	global w;
 
-	global learningRate;
-
-	global epsilon;
-
 	global numberOfLayers;
-
-	global trainingType;
 
 	if(isrow(hiddenLayers))
 		hiddenLayers = hiddenLayers';
@@ -33,41 +27,43 @@ function w = mlp(patterns, targets, activationFunction, hiddenLayers, learningRa
 
 	if(strcmp(trainingType,'batch'))
 		do
-			w = backpropagationBatch(patterns, targets, activationFunction, hiddenLayers, derivativeFunction);
+			w = backpropagationBatch(patterns, targets, activationFunction, hiddenLayers, learningRate, derivativeFunction);
 
 			epochs += 1;
 
-		until((limitError(targets) == 0) || epochs == limitEpochs)
+			updateLearningRate(calcError(targets), hiddenLayers, learningRate, numberOfInputsIncludedBias, numberOfOutputs, epsilon);
 
-		
-		calculatedOutputs
+			epochError(epochs, :) = 0.5 * sum((targets - calculatedOutputs) .^ 2);
+
+		until((limitError(targets, epsilon) == 0) || epochs == limitEpochs)
+
+		figure(2);
+		plot(1:epochs, epochError);
+		grid on;
+		hold on;
 
 	elseif (strcmp(trainingType,'incremental'))
 
 		do
-			w = backpropagation(patterns, targets, activationFunction, hiddenLayers, derivativeFunction);
+			w = backpropagation(patterns, targets, activationFunction, hiddenLayers, learningRate, derivativeFunction, momentum);
 
 			epochs += 1;
 
-			updateLearningRate(calcError(targets));
+			updateLearningRate(calcError(targets), hiddenLayers, learningRate, numberOfInputsIncludedBias, numberOfOutputs, epsilon);
 
-		until((limitError(targets) == 0) || epochs == limitEpochs)
+			epochError(epochs, :) = 0.5 * sum((targets - calculatedOutputs) .^ 2);
+		
+		until((limitError(targets, epsilon) == 0) || epochs == limitEpochs)
 
-		% calculatedOutputs
+		figure(2);
+		plot(1:epochs, epochError, 'g');
+		grid on;
+		hold on;
 
-		% finalW = w
 	else
 		error('Wrong training type');
 	endif		
 
-
-	% epochs
-
-	% limitError(targets)
-
-	% error = calcError(targets)
-
-	% plot(1:epochs,totalLearningError,'g.');
 	% plot3(patterns(:,2),patterns(:,3),calculatedOutputs,'b*');
 
 endfunction

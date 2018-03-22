@@ -12,10 +12,9 @@ function error = calcError(targets)
 
 endfunction
 
-function a = limitError(targets)
+function a = limitError(targets, epsilon)
 
 	global calculatedOutputs;
-	global epsilon;
 
 	a = 0;
 	i = 0;
