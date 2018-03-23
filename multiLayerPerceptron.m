@@ -2,7 +2,8 @@
 
 learningRateFunctions
 
-function w = mlp(patterns, targets, activationFunction, hiddenLayers, learningRate, limitEpochs, epsilon, trainingType, momentum)
+function w = mlp(patterns, targets, activationFunction, hiddenLayers, learningRate, limitEpochs, 
+	epsilon, trainingType, momentum)
 
 	global calculatedOutputs;
 
@@ -27,38 +28,57 @@ function w = mlp(patterns, targets, activationFunction, hiddenLayers, learningRa
 
 	if(strcmp(trainingType,'batch'))
 		do
-			w = backpropagationBatch(patterns, targets, activationFunction, hiddenLayers, learningRate, derivativeFunction);
-
+			w = backpropagationBatch(patterns, targets, activationFunction, hiddenLayers, 
+				learningRate, derivativeFunction, momentum);
+	
 			epochs += 1;
 
-			updateLearningRate(calcError(targets), hiddenLayers, learningRate, numberOfInputsIncludedBias, numberOfOutputs, epsilon);
+			printf(disp(epochs));
+	
+			% learningRate = updateLearningRate(calcError(targets), hiddenLayers, learningRate, 
+				% numberOfInputsIncludedBias, numberOfOutputs, epsilon)
+	
+			epochError(epochs, :) = (0.5 * sum((targets - calculatedOutputs) .^ 2))/rows(patterns);
+			epochError(epochs)
 
-			epochError(epochs, :) = 0.5 * sum((targets - calculatedOutputs) .^ 2);
+			figure(2);
+			plot(1:epochs, epochError, 'o-g');
+			grid on;
+			hold on;
+			more off;
+			drawnow()
 
-		until((limitError(targets, epsilon) == 0) || epochs == limitEpochs)
+		until(epochError(epochs) <= epsilon || epochs == limitEpochs)
 
-		figure(2);
-		plot(1:epochs, epochError);
-		grid on;
-		hold on;
+		% figure(2);
+		% plot(1:epochs, epochError,'o-b');
+		% grid on;
+		% hold on;
 
 	elseif (strcmp(trainingType,'incremental'))
 
 		do
-			w = backpropagation(patterns, targets, activationFunction, hiddenLayers, learningRate, derivativeFunction, momentum);
-
+			w = backpropagation(patterns, targets, activationFunction, hiddenLayers, 
+				learningRate, derivativeFunction, momentum);
+	
 			epochs += 1;
+	
+			printf(disp(epochs));
+	
+			learningRate = updateLearningRate(calcError(targets), hiddenLayers, learningRate, 
+				numberOfInputsIncludedBias, numberOfOutputs, epsilon)
+	
+			epochError(epochs, :) = (0.5 * sum((targets - calculatedOutputs) .^ 2))/rows(patterns);
+			epochError(epochs)
 
-			updateLearningRate(calcError(targets), hiddenLayers, learningRate, numberOfInputsIncludedBias, numberOfOutputs, epsilon);
-
-			epochError(epochs, :) = 0.5 * sum((targets - calculatedOutputs) .^ 2);
+			figure(2);
+			plot(1:epochs, epochError, 'o-b');
+			grid on;
+			hold on;
+			more off;
+			drawnow()
 		
-		until((limitError(targets, epsilon) == 0) || epochs == limitEpochs)
-
-		figure(2);
-		plot(1:epochs, epochError, 'g');
-		grid on;
-		hold on;
+		until(epochError(epochs) <= epsilon || epochs == limitEpochs)
 
 	else
 		error('Wrong training type');

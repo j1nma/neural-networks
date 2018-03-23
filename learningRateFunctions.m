@@ -1,6 +1,6 @@
 1;
 
-function updateLearningRate(currentPatternError, hiddenLayers, learningRate, numberOfInputsIncludedBias, numberOfOutputs, epsilon)
+function learningRate = updateLearningRate(currentPatternError, hiddenLayers, learningRate, numberOfInputsIncludedBias, numberOfOutputs, epsilon)
 
 	global w;
 
