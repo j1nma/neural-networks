@@ -53,7 +53,12 @@ function w = mlp(patterns, targets, activationFunction, hiddenLayers, learningRa
 		until((limitError(calculatedOutputs,targets, epsilon) == 0) || epochs == limitEpochs)
 
 		figure(2);
-		plot(lr,1:length(lr));
+		plot(lr,1:length(lr),'r');
+		grid on;
+		hold on;
+
+		figure(3);
+		plot(epochError,1:epochs,'r');
 		grid on;
 		hold on;
 
@@ -80,7 +85,12 @@ function w = mlp(patterns, targets, activationFunction, hiddenLayers, learningRa
 		until((limitError(calculatedOutputs,targets, epsilon) == 0) || epochs == limitEpochs)
 
 		figure(2);
-		plot(lr,1:length(lr));
+		plot(1:length(lr),lr,'g');
+		grid on;
+		hold on;
+
+		figure(3);
+		plot(epochError,1:epochs,'g');
 		grid on;
 		hold on;
 

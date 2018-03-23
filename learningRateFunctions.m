@@ -24,9 +24,6 @@ function lr = updateLearningRate(prevW, prevce, ce, learningRate)
 			if(learningRate - inc)>0
 				lr = learningRate - inc;
 			endif
-
-			prevW
-			w
 		endif
 
 		if it == top
