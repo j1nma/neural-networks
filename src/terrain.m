@@ -1,13 +1,29 @@
 1;
 
-% Load files
+clc
+clear all
+close all
+
+page_screen_output(0);
+page_output_immediately(1);
+
+addpath('../config')
+addpath('./loadFiles')
+
+% Config files
 terrainConfig
 
-derivatives
+% Load file
+terrainLoadFiles
 
-errorFunctions
+% Parse data
+filename = '../res/terrain01.data';
+delimiterIn = ' ';
+headerlinesIn = 1;
+A = importdata(filename, delimiterIn, headerlinesIn);
 
-multiLayerPerceptron
+% Load files
+
 
 x=A.data(:,1);
 y=A.data(:,2);

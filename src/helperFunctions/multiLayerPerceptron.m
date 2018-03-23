@@ -33,13 +33,15 @@ function w = mlp(patterns, targets, activationFunction, hiddenLayers, learningRa
 	
 			epochs += 1;
 
-			printf(disp(epochs));
+			% printf(disp(epochs));
 	
 			% learningRate = updateLearningRate(calcError(targets), hiddenLayers, learningRate, 
 				% numberOfInputsIncludedBias, numberOfOutputs, epsilon)
 	
-			epochError(epochs, :) = (0.5 * sum((targets - calculatedOutputs) .^ 2))/rows(patterns);
-			epochError(epochs)
+			% epochError(epochs, :) = (0.5 * sum((targets - calculatedOutputs) .^ 2))/rows(patterns);
+			% epochError(epochs, :) = (0.5 * sum((targets - calculatedOutputs) .^ 2));
+			epochError(epochs, :) = (sum((targets - calculatedOutputs) .^ 2))/rows(patterns);
+			% epochError(epochs)
 
 			figure(2);
 			plot(1:epochs, epochError, 'o-g');
@@ -63,13 +65,16 @@ function w = mlp(patterns, targets, activationFunction, hiddenLayers, learningRa
 	
 			epochs += 1;
 	
-			printf(disp(epochs));
+			% printf(disp(epochs));
 	
 			learningRate = updateLearningRate(calcError(targets), hiddenLayers, learningRate, 
-				numberOfInputsIncludedBias, numberOfOutputs, epsilon)
+				numberOfInputsIncludedBias, numberOfOutputs, epsilon);
 	
-			epochError(epochs, :) = (0.5 * sum((targets - calculatedOutputs) .^ 2))/rows(patterns);
-			epochError(epochs)
+			% epochError(epochs, :) = (0.5 * sum((targets - calculatedOutputs) .^ 2))/rows(patterns);
+			% epochError(epochs, :) = (0.5 * sum((targets - calculatedOutputs) .^ 2));
+			epochError(epochs, :) = (sum((targets - calculatedOutputs) .^ 2))/rows(patterns);
+
+			% epochError(epochs)
 
 			figure(2);
 			plot(1:epochs, epochError, 'o-b');

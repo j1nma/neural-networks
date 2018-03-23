@@ -59,7 +59,7 @@ function w = backpropagation(patterns, targets, activationFunction, hiddenLayers
     					deltaW{m}(i,j) = learningRate * delta{m}(i) * [-1 v{m-1}](j);
     				else
     					momentumTerm = momentum * deltaW{m}(i,j);
-    					deltaW{m}(i,j) = (1-momentum)*learningRate * delta{m}(i) * [-1 v{m-1}](j) + momentumTerm;
+    					deltaW{m}(i,j) = (1-momentum) * learningRate * delta{m}(i) * [-1 v{m-1}](j) + momentumTerm;
     				endif
     
     		     	w{m}(i,j) = w{m}(i,j) + deltaW{m}(i,j);
@@ -79,7 +79,7 @@ function w = backpropagation(patterns, targets, activationFunction, hiddenLayers
     				deltaW{1}(i,j) = learningRate * delta{1}(i) * inputPattern(j);
     			else
     				momentumTerm = momentum * deltaW{1}(i,j);
-    				deltaW{1}(i,j) = (1-momentum)*learningRate * delta{1}(i) * inputPattern(j) + momentumTerm;
+    				deltaW{1}(i,j) = (1-momentum) * learningRate * delta{1}(i) * inputPattern(j) + momentumTerm;
     		    endif 
 
     			w{1}(i,j) = w{1}(i,j) + deltaW{1}(i,j);

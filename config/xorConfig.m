@@ -8,8 +8,8 @@ learningRate = 0.1;
 
 limitEpochs = 6500;
 
-epsilon = 0.001;
+epsilon = 0.025;
 
-trainingType = 'batch';
+trainingType = 'incremental';
 
 momentum = 0.9;

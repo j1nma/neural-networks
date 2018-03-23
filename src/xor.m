@@ -4,31 +4,30 @@ clc
 clear all
 close all
 
-% Load files
+page_screen_output(0);
+page_output_immediately(1);
+
+addpath('../config')
+addpath('./loadFiles')
+
+% Config files
 xorConfig
 
-singlePerceptron
-
-derivatives
-
-errorFunctions
-
-learningRateFunctions
-
-multiLayerPerceptron
+% Load file
+xorLoadFiles
 
 % Extra parameters
 bits = 2;
 
 % Keep random subset for training and testing
 patterns = entryCombinations(bits);
-testPatterns = randomSubset(patterns, setSizePercentage);
+testPatterns = randomSubset(patterns, setSizePercentage)
 testTargets = calcWantedOutputs(testPatterns, @bitxor);
 
 % Parameters
 trainPatterns = randomSubset(patterns, setSizePercentage);
 trainTargets = calcWantedOutputs(trainPatterns, @bitxor);
-trainPatterns = preprocessing(trainPatterns)
+trainPatterns = preprocessing(trainPatterns);
 
 trainW = mlp(trainPatterns, trainTargets, activationFunction, hiddenLayers, learningRate, limitEpochs, epsilon, trainingType, momentum);
 
@@ -37,23 +36,23 @@ testPatterns = preprocessing(testPatterns);
 
 testCalculatedOutputs = evaluateNetwork(testPatterns, testTargets, activationFunction, trainW, hiddenLayers)
 
-successRate = ((sum(abs(testTargets - testCalculatedOutputs) <= sqrt(epsilon*2)))/rows(testPatterns))*100;
+successRate = ((sum(abs(testTargets - testCalculatedOutputs) <= epsilon))/rows(testPatterns))*100;
 
-printf('Batch success rate: %d%%\n', successRate);
+printf('%s success rate: %d%%\n', trainingType, successRate);
 % END TEST %
 
 
-% INCREMENTAL TRAINING
+% OTHER TRAINING
 xorConfig
 
-trainingType = 'incremental';
+trainingType = 'batch';
 
 trainW = mlp(trainPatterns, trainTargets, activationFunction, hiddenLayers, learningRate, limitEpochs, epsilon, trainingType, momentum);
 
 % TEST %
 testCalculatedOutputs = evaluateNetwork(testPatterns, testTargets, activationFunction, trainW, hiddenLayers)
 
-successRate = ((sum(abs(testTargets - testCalculatedOutputs) <= sqrt(epsilon*2)))/rows(testPatterns))*100;
+successRate = ((sum(abs(testTargets - testCalculatedOutputs) <= epsilon))/rows(testPatterns))*100;
 
-printf('Incremental success rate: %d%%\n', successRate);
+printf('%s success rate: %d%%\n', trainingType, successRate);
 % END TEST %
