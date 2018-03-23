@@ -1,6 +1,10 @@
 1;
 
+<<<<<<< HEAD:learningRateFunctions.m
 function lr = updateLearningRate(prevW, prevce, ce, learningRate)
+=======
+function learningRate = updateLearningRate(currentPatternError, hiddenLayers, learningRate, numberOfInputsIncludedBias, numberOfOutputs, epsilon)
+>>>>>>> ded4728a4677f5bb71c589d0d1908a5af25ed685:src/helperFunctions/learningRateFunctions.m
 
 	global top = 5;
 
@@ -24,9 +28,6 @@ function lr = updateLearningRate(prevW, prevce, ce, learningRate)
 			if(learningRate - inc)>0
 				lr = learningRate - inc;
 			endif
-
-			prevW
-			w
 		endif
 
 		if it == top

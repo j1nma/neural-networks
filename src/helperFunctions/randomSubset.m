@@ -4,7 +4,7 @@ function rs = randomSubset(patterns, percentage)
 		error('Wrong percentage. (0.0-1.0]')
 	endif
 
-rp = randperm(length(patterns)); 
+rp = randperm(length(patterns));
 
 rts = rp(1:ceil((length(patterns)*percentage)));
 

@@ -1,4 +1,4 @@
-function ans = computeAndAccumulateDeltas(deltaW, target, learningRate, inputPattern, numberOfLayers, w, h, v, layers, activationFunction, derivativeFunction);
+function ans = computeAndAccumulateDeltas(deltaW, target, learningRate, inputPattern, numberOfLayers, w, h, v, layers, activationFunction, derivativeFunction, momentum, t);
 
 		global deltaW;
 
@@ -29,13 +29,12 @@ function ans = computeAndAccumulateDeltas(deltaW, target, learningRate, inputPat
 
     		 	for j = 1:columns(w{m})
 
-    		 		% if(t == 0)
+    		 		if(t == 0)
     					deltaW{m}(i,j) += learningRate * delta{m}(i) * [-1 v{m-1}](j);
-    				% else
-    					% momentumTerm = momentum * deltaW{m}(i,j);
-    					% momentumTerm = 0;
-    					% deltaW{m}(i,j) += learningRate * delta{m}(i) * [-1 v{m-1}](j) + momentumTerm;
-    				% endif
+    				else
+    					momentumTerm = momentum * deltaW{m}(i,j);
+    					deltaW{m}(i,j) += (1-momentum)*learningRate * delta{m}(i) * [-1 v{m-1}](j) + momentumTerm;
+    				endif
         
     			endfor
     	
@@ -48,17 +47,15 @@ function ans = computeAndAccumulateDeltas(deltaW, target, learningRate, inputPat
 
     		for j = 1:columns(w{1})
     		     
-    			% if(t == 0)
+    			if(t == 0)
     				deltaW{1}(i,j) += learningRate * delta{1}(i) * inputPattern(j);
-    			% else
-    				% momentumTerm = momentum * deltaW{1}(i,j);
-    				% momentumTerm = 0;
-    				% deltaW{1}(i,j) += learningRate * delta{1}(i) * inputPattern(j) + momentumTerm;
-    		    % endif 
+    			else
+    				momentumTerm = momentum * deltaW{1}(i,j);
+    				deltaW{1}(i,j) += (1-momentum)*learningRate * delta{1}(i) * inputPattern(j) + momentumTerm;
+    		    endif 
 
     		endfor
 	
     	endfor
-
 
 endfunction
