@@ -1,4 +1,4 @@
-function w = backpropagationBatch(patterns, targets, activationFunction, hiddenLayers, learningRate, derivativeFunction, momentum)
+function w = backpropagationBatch(patterns, targets, activationFunction, hiddenLayers, learningRate, derivativeFunction, momentum) 
 
 	global calculatedOutputs;
 

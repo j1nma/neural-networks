@@ -29,7 +29,7 @@ trainPatterns = randomSubset(patterns, setSizePercentage);
 trainTargets = calcWantedOutputs(trainPatterns, @bitxor);
 trainPatterns = preprocessing(trainPatterns);
 
-trainW = mlp(trainPatterns, trainTargets, activationFunction, hiddenLayers, learningRate, limitEpochs, epsilon, trainingType, momentum);
+trainW = mlp(trainPatterns, trainTargets, activationFunction, hiddenLayers, learningRate, adaptativeLearningRate, limitEpochsForLearningRate, limitEpochs, epsilon, trainingType, momentum);
 
 % TEST %;
 testPatterns = preprocessing(testPatterns);

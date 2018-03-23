@@ -2,8 +2,8 @@
 
 learningRateFunctions
 
-function w = mlp(patterns, targets, activationFunction, hiddenLayers, learningRate, limitEpochs, 
-	epsilon, trainingType, momentum)
+function w = mlp(patterns, targets, activationFunction, hiddenLayers, learningRate, adaptativeLearningRate, limitEpochsForLearningRate, limitEpochs, 
+	epsilon, trainingType, momentum) 
 
 	global calculatedOutputs;
 
@@ -29,14 +29,15 @@ function w = mlp(patterns, targets, activationFunction, hiddenLayers, learningRa
 	if(strcmp(trainingType,'batch'))
 		do
 			w = backpropagationBatch(patterns, targets, activationFunction, hiddenLayers, 
-				learningRate, derivativeFunction, momentum);
+				learningRate, derivativeFunction, momentum); 
 	
 			epochs += 1;
 
 			% printf(disp(epochs));
 	
-			% learningRate = updateLearningRate(calcError(targets), hiddenLayers, learningRate, 
-				% numberOfInputsIncludedBias, numberOfOutputs, epsilon)
+			if(adaptativeLearningRate == 1 && mod(epochs, limitEpochsForLearningRate) == 0) 
+				learningRate = %Funcion Juanma 
+			endif
 	
 			% epochError(epochs, :) = (0.5 * sum((targets - calculatedOutputs) .^ 2))/rows(patterns);
 			% epochError(epochs, :) = (0.5 * sum((targets - calculatedOutputs) .^ 2));
@@ -66,10 +67,11 @@ function w = mlp(patterns, targets, activationFunction, hiddenLayers, learningRa
 			epochs += 1;
 	
 			% printf(disp(epochs));
-	
-			learningRate = updateLearningRate(calcError(targets), hiddenLayers, learningRate, 
-				numberOfInputsIncludedBias, numberOfOutputs, epsilon);
-	
+
+			if(adaptativeLearningRate == 1 && mod(epochs, limitEpochsForLearningRate) == 0) 
+				learningRate = %Funcion Juanma 
+			endif
+			
 			% epochError(epochs, :) = (0.5 * sum((targets - calculatedOutputs) .^ 2))/rows(patterns);
 			% epochError(epochs, :) = (0.5 * sum((targets - calculatedOutputs) .^ 2));
 			epochError(epochs, :) = (sum((targets - calculatedOutputs) .^ 2))/rows(patterns);

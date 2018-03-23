@@ -50,7 +50,7 @@ if(logical(normalizedPatterns))
 	testPatterns = normalizeWithParameters(testPatterns, mP, sP);
 endif
 
-trainW = mlp(trainPatterns, trainTargets, activationFunction, hiddenLayers, learningRate, limitEpochs, epsilon, trainingType, momentum);
+trainW = mlp(trainPatterns, trainTargets, activationFunction, hiddenLayers, learningRate, adaptativeLearningRate, limitEpochsForLearningRate, limitEpochs, epsilon, trainingType, momentum);
 
 % TEST %
 testCalculatedOutputs = evaluateNetwork(testPatterns, testTargets, activationFunction, trainW, hiddenLayers);

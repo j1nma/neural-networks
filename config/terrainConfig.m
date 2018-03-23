@@ -15,3 +15,5 @@ trainingType = 'incremental';
 momentum = 0.9;
 
 normalizedPatterns = 0;
+
+adaptativeLearningRate = 1; %1 para si. 0 para no
