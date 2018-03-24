@@ -31,7 +31,7 @@ function w = mlp(patterns, targets, activationFunction, hiddenLayers, learningRa
 	if(strcmp(trainingType,'batch'))
 		do
 			w = backpropagationBatch(patterns, targets, activationFunction, hiddenLayers, 
-				learningRate, derivativeFunction, momentum);
+				learningRate, derivativeFunction, momentum); 
 	
 			epochs += 1;
 
