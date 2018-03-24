@@ -1,4 +1,4 @@
-setSizePercentage = 0.5;
+setSizePercentage = 1.0;
 
 activationFunction = @tanh;
 
@@ -8,8 +8,12 @@ learningRate = 0.1;
 
 limitEpochs = 6500;
 
-epsilon = 0.025;
+epsilon = 0.015;
 
 trainingType = 'incremental';
 
 momentum = 0.9;
+
+adaptativeLearningRate = 1;
+
+limitEpochsForLearningRate = 10;

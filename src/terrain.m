@@ -22,12 +22,9 @@ delimiterIn = ' ';
 headerlinesIn = 1;
 A = importdata(filename, delimiterIn, headerlinesIn);
 
-% Load files
-
-
-x=A.data(:,1);
-y=A.data(:,2);
-z=A.data(:,3);
+x = A.data(:,1);
+y = A.data(:,2);
+z = A.data(:,3);
 
 % Random subset for training and testing
 trainSet = randomSubset(A.data(:,:), setSizePercentage);
@@ -38,6 +35,8 @@ trainTargets = trainSet(:,3);
 
 testPatterns = testSet(:,1:2);
 testTargets = testSet(:,3);
+
+preprocessedTestPatterns = testPatterns;
 
 % plot3(trainPatterns(:,1), trainPatterns(:,2), trainTargets,'rx');
 
@@ -50,12 +49,12 @@ if(logical(normalizedPatterns))
 	testPatterns = normalizeWithParameters(testPatterns, mP, sP);
 endif
 
-trainW = mlp(trainPatterns, trainTargets, activationFunction, hiddenLayers, learningRate, limitEpochs, epsilon, trainingType, momentum);
+trainW = mlp(trainPatterns, trainTargets, activationFunction, hiddenLayers, learningRate, limitEpochs, epsilon, trainingType, momentum, adaptativeLearningRate, limitEpochsForLearningRate);
 
 % TEST %
 testCalculatedOutputs = evaluateNetwork(testPatterns, testTargets, activationFunction, trainW, hiddenLayers);
 
-successRate = ((sum(abs(testTargets - testCalculatedOutputs)<=epsilon))/rows(testPatterns))*100;
+successRate = ((sum(abs(testTargets - testCalculatedOutputs) <= 0.10))/rows(testPatterns))*100;
 
 printf('%s success rate: %d%%\n', trainingType, successRate);
 
@@ -79,7 +78,7 @@ printf('%s success rate: %d%%\n', trainingType, successRate);
 
 % trainingType = 'batch';
 
-% trainW = mlp(trainPatterns, trainTargets, activationFunction, hiddenLayers, learningRate, limitEpochs, epsilon, trainingType, momentum);
+% trainW = mlp(trainPatterns, trainTargets, activationFunction, hiddenLayers, learningRate, limitEpochs, epsilon, trainingType, momentum, adaptativeLearningRate, limitEpochsForLearningRate);
 
 % TEST %
 % testCalculatedOutputs = evaluateNetwork(testPatterns, testTargets, activationFunction, trainW, hiddenLayers)
@@ -93,7 +92,7 @@ figure(1)
 grid on
 hold on
 plot3(x,y,z,'.');
-plot3(testPatterns(:,2), testPatterns(:,3), testCalculatedOutputs, 'rx');
+plot3(preprocessedTestPatterns(:,1), preprocessedTestPatterns(:,2), testCalculatedOutputs, 'rx');
 
 
 
