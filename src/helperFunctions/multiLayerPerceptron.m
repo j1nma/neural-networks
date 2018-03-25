@@ -26,17 +26,32 @@ function w = mlp(patterns, targets, activationFunction, hiddenLayers, learningRa
 	numberOfOutputs = columns(targets);
 	w = randomInitialWeights(hiddenLayers, numberOfInputsIncludedBias, numberOfOutputs);
 
+	prevW = w;
+	prevce = 0;
+	ce = 0;
+
 	if(strcmp(trainingType,'batch'))
 		do
+
+			prevW = w;
+
 			w = backpropagationBatch(patterns, targets, activationFunction, hiddenLayers, 
 				learningRate, derivativeFunction, momentum); 
 	
 			epochs += 1;
 
 			% printf(disp(epochs));
+
+			if(epochs == 1)
+				prevce = 0;
+			else
+				prevce = ce;
+			endif
+
+			ce = (sum((targets - calculatedOutputs) .^ 2))/rows(patterns);
 	
-			if(adaptativeLearningRate == 1 && mod(epochs, limitEpochsForLearningRate) == 0) 
-				learningRate = %Funcion Juanma 
+			if(adaptativeLearningRate == 1) 
+				learningRate = updateLearningRate(prevW, prevce, ce, learningRate); 
 			endif
 	
 			% epochError(epochs, :) = (0.5 * sum((targets - calculatedOutputs) .^ 2))/rows(patterns);
@@ -61,21 +76,30 @@ function w = mlp(patterns, targets, activationFunction, hiddenLayers, learningRa
 	elseif (strcmp(trainingType,'incremental'))
 
 		do
+			prevW = w;
+
 			w = backpropagation(patterns, targets, activationFunction, hiddenLayers, 
-				learningRate, derivativeFunction, momentum);
+				learningRate, derivativeFunction, momentum); 
 	
 			epochs += 1;
-	
+
 			% printf(disp(epochs));
 
-			if(adaptativeLearningRate == 1 && mod(epochs, limitEpochsForLearningRate) == 0) 
-				learningRate = %Funcion Juanma 
+			if(epochs == 1)
+				prevce = 0;
+			else
+				prevce = ce;
 			endif
-			
+
+			ce = (sum((targets - calculatedOutputs) .^ 2))/rows(patterns);
+	
+			if(adaptativeLearningRate == 1) 
+				learningRate = updateLearningRate(prevW, prevce, ce, learningRate)
+			endif
+	
 			% epochError(epochs, :) = (0.5 * sum((targets - calculatedOutputs) .^ 2))/rows(patterns);
 			% epochError(epochs, :) = (0.5 * sum((targets - calculatedOutputs) .^ 2));
 			epochError(epochs, :) = (sum((targets - calculatedOutputs) .^ 2))/rows(patterns);
-
 			% epochError(epochs)
 
 			figure(2);
