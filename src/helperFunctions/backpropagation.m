@@ -1,8 +1,12 @@
-function w = backpropagation(patterns, targets, activationFunction, hiddenLayers, learningRate, derivativeFunction, momentum)
+function backpropagation(patterns, targets, activationFunction, hiddenLayers, learningRate, derivativeFunction, momentum)
 
 	global calculatedOutputs;
 
 	global w;
+
+	global h;
+
+	global v;
 
 	% 2. Choose a pattern and set it to be the entry layer
 	numberOfPatterns = rows(patterns);
@@ -11,8 +15,8 @@ function w = backpropagation(patterns, targets, activationFunction, hiddenLayers
 	numberOfLayers = rows(layers);
 
 	% Momentum parameters
-	deltaW = w;
-	t = 0;
+	global deltaW;
+	global t;
 
 	for p = 1:numberOfPatterns
 
@@ -25,11 +29,11 @@ function w = backpropagation(patterns, targets, activationFunction, hiddenLayers
 		% 3. Propagate output forward for each neuron of each layer upto the output layer
 
 		% Cada h{m} es un vector fila
-		global h = cell(numberOfLayers,1);
+		h = cell(numberOfLayers,1);
 
-		global v = cell(numberOfLayers,1);
+		v = cell(numberOfLayers,1);
 
-		calculatedOutputs(p, :) = computeOutputs(inputPattern, numberOfLayers, w, h, v, layers, activationFunction);
+		calculatedOutputs(p, :) = computeOutputs(inputPattern, numberOfLayers, w, layers, activationFunction);
 		
 		% 4. Calculate deltas between output layer and wanted output
 
@@ -45,8 +49,7 @@ function w = backpropagation(patterns, targets, activationFunction, hiddenLayers
 
 			for i = 1:numberOfNeuronsInLayer
 				% First column of w is bias
-
-				delta{m-1}(i) = derivativeFunction(h{m-1}(i)) * (w{m}(:, i+1)' * delta{m}');
+				delta{m-1}(i) = derivativeFunction(h{m-1}(i))* (delta{m} * w{m}(:, i+1));
 
 			endfor
 
@@ -56,13 +59,12 @@ function w = backpropagation(patterns, targets, activationFunction, hiddenLayers
     			for j = 1:columns(w{m})
 
     				if(t == 0)
-    					deltaW{m}(i,j) = learningRate * delta{m}(i) * [-1 v{m-1}](j);
+    					momentumTerm = 0;
     				else
     					momentumTerm = momentum * deltaW{m}(i,j);
-    					deltaW{m}(i,j) = (1-momentum) * learningRate * delta{m}(i) * [-1 v{m-1}](j) + momentumTerm;
-    					% deltaW{m}(i,j) = learningRate * delta{m}(i) * [-1 v{m-1}](j) + momentumTerm;
-
     				endif
+
+    				deltaW{m}(i,j) = learningRate * delta{m}(i) * [-1 v{m-1}](j) + momentumTerm;
 
     				w{m}(i,j) = w{m}(i,j) + deltaW{m}(i,j);
 
@@ -78,13 +80,12 @@ function w = backpropagation(patterns, targets, activationFunction, hiddenLayers
   			for j = 1:columns(w{1})
 
   				if(t == 0)
-  					deltaW{1}(i,j) = learningRate * delta{1}(i) * inputPattern(j);
+  					momentumTerm = 0;
   				else
   					momentumTerm = momentum * deltaW{1}(i,j);
-  					deltaW{1}(i,j) = (1-momentum) * learningRate * delta{1}(i) * inputPattern(j) + momentumTerm;
-  					% deltaW{1}(i,j) = learningRate * delta{1}(i) * inputPattern(j) + momentumTerm;
+  				endif
 
-  				endif 
+  				deltaW{1}(i,j) = learningRate * delta{1}(i) * inputPattern(j) + momentumTerm;
 
   				w{1}(i,j) = w{1}(i,j) + deltaW{1}(i,j);
 
@@ -94,7 +95,9 @@ function w = backpropagation(patterns, targets, activationFunction, hiddenLayers
 
   		t += 1;
 
-	% 7. Back to step 2 for next pattern
-endfor
+  	endfor
 
-endfunction
+  	clear global h;
+  	clear global v;
+
+  endfunction

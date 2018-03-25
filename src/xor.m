@@ -7,14 +7,14 @@ close all
 page_screen_output(0);
 page_output_immediately(1);
 
-addpath('../config')
 addpath('./loadFiles')
-
-% Config files
-xorConfig
+addpath('../config')
 
 % Load file
 xorLoadFiles
+
+% Config files
+xorConfig
 
 % Extra parameters
 bits = 2;
@@ -25,29 +25,24 @@ testPatterns = randomSubset(patterns, setSizePercentage)
 testTargets = calcWantedOutputs(testPatterns, @bitxor);
 
 % Parameters
-trainPatterns = randomSubset(patterns, setSizePercentage)
+trainPatterns = randomSubset(patterns, setSizePercentage);
 trainTargets = calcWantedOutputs(trainPatterns, @bitxor);
 trainPatterns = preprocessing(trainPatterns);
-
-trainW = mlp(trainPatterns, trainTargets, activationFunction, hiddenLayers, learningRate, limitEpochs, epsilon, trainingType, momentum, adaptativeLearningRate, limitEpochsForLearningRate);
-
-% TEST %;
 testPatterns = preprocessing(testPatterns);
 
-testCalculatedOutputs = evaluateNetwork(testPatterns, testTargets, activationFunction, trainW, hiddenLayers)
+if(logical(normalizedPatterns))
+	[trainPatterns, mP, sP] = normalizePatterns(trainPatterns);
+	testPatterns = normalizeWithParameters(testPatterns, mP, sP);
+endif
 
-successRate = ((sum(abs(testTargets - testCalculatedOutputs) <= 0.15))/rows(testPatterns))*100;
+trainPatterns
 
-printf('%s success rate: %d%%\n', trainingType, successRate);
-% END TEST %
+trainW = mlp(trainPatterns, trainTargets, activationFunction, hiddenLayers, learningRate, limitEpochs, epsilon, 
+	trainingType, momentum, adaptativeLearningRate, limitEpochsForLearningRate, 
+	learningRateIncrement, learningRateGeometricDecrement);
 
+whos global
 
-% OTHER TRAINING
-xorConfig
-
-trainingType = 'batch';
-
-trainW = mlp(trainPatterns, trainTargets, activationFunction, hiddenLayers, learningRate, limitEpochs, epsilon, trainingType, momentum, adaptativeLearningRate, limitEpochsForLearningRate);
 
 % TEST %
 testCalculatedOutputs = evaluateNetwork(testPatterns, testTargets, activationFunction, trainW, hiddenLayers)
@@ -56,3 +51,24 @@ successRate = ((sum(abs(testTargets - testCalculatedOutputs) <= 0.15))/rows(test
 
 printf('%s success rate: %d%%\n', trainingType, successRate);
 % END TEST %
+
+% OTHER TRAINING
+clear -global
+
+% xorConfig
+
+% trainingType = 'batch';
+
+% trainW = mlp(trainPatterns, trainTargets, activationFunction, hiddenLayers, learningRate, limitEpochs, epsilon, 
+% 	trainingType, momentum, adaptativeLearningRate, limitEpochsForLearningRate, 
+% 	learningRateIncrement, learningRateGeometricDecrement);
+
+% clear -global
+
+% % TEST %
+% testCalculatedOutputs = evaluateNetwork(testPatterns, testTargets, activationFunction, trainW, hiddenLayers)
+
+% successRate = ((sum(abs(testTargets - testCalculatedOutputs) <= 0.15))/rows(testPatterns))*100;
+
+% printf('%s success rate: %d%%\n', trainingType, successRate);
+% % END TEST %

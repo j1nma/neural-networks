@@ -1,5 +1,7 @@
-function w = randomInitialWeights(hiddenLayers, numberOfInputsIncludedBias, numberOfOutputs)
+function randomInitialWeights(hiddenLayers, numberOfInputsIncludedBias, numberOfOutputs)
 	
+	global w;
+
 	numberOfHiddenLayers = length(hiddenLayers);
 
 	% + 1 for output layer

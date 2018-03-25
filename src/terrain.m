@@ -7,14 +7,14 @@ close all
 page_screen_output(0);
 page_output_immediately(1);
 
-addpath('../config')
 addpath('./loadFiles')
-
-% Config files
-terrainConfig
+addpath('../config')
 
 % Load file
 terrainLoadFiles
+
+% Config files
+terrainConfig
 
 % Parse data
 filename = '../res/terrain01.data';
@@ -36,20 +36,25 @@ trainTargets = trainSet(:,3);
 testPatterns = testSet(:,1:2);
 testTargets = testSet(:,3);
 
-preprocessedTestPatterns = testPatterns;
+[trainTargets, mP, sP] = normalizePatterns(trainTargets);
+testTargets = normalizeWithParameters(testTargets, mP, sP);
 
-% plot3(trainPatterns(:,1), trainPatterns(:,2), trainTargets,'rx');
-
-% Consider normalizing for exponentialSigmoid activation function
+rawTestPatterns = testPatterns;
 trainPatterns = preprocessing(trainPatterns);
 testPatterns = preprocessing(testPatterns);
+
+testPatterns(1:3,:)
 
 if(logical(normalizedPatterns))
 	[trainPatterns, mP, sP] = normalizePatterns(trainPatterns);
 	testPatterns = normalizeWithParameters(testPatterns, mP, sP);
 endif
 
-trainW = mlp(trainPatterns, trainTargets, activationFunction, hiddenLayers, learningRate, limitEpochs, epsilon, trainingType, momentum, adaptativeLearningRate, limitEpochsForLearningRate);
+testPatterns(1:3,:)
+
+trainW = mlp(trainPatterns, trainTargets, activationFunction, hiddenLayers, learningRate, limitEpochs, epsilon, 
+	trainingType, momentum, adaptativeLearningRate, limitEpochsForLearningRate, learningRateIncrement, 
+	learningRateGeometricDecrement);
 
 % TEST %
 testCalculatedOutputs = evaluateNetwork(testPatterns, testTargets, activationFunction, trainW, hiddenLayers);
@@ -78,7 +83,9 @@ printf('%s success rate: %d%%\n', trainingType, successRate);
 
 % trainingType = 'batch';
 
-% trainW = mlp(trainPatterns, trainTargets, activationFunction, hiddenLayers, learningRate, limitEpochs, epsilon, trainingType, momentum, adaptativeLearningRate, limitEpochsForLearningRate);
+% trainW = mlp(trainPatterns, trainTargets, activationFunction, hiddenLayers, learningRate, limitEpochs, epsilon, 
+	% trainingType, momentum, adaptativeLearningRate, limitEpochsForLearningRate, learningRateIncrement, 
+	% learningRateGeometricDecrement);
 
 % TEST %
 % testCalculatedOutputs = evaluateNetwork(testPatterns, testTargets, activationFunction, trainW, hiddenLayers)
@@ -92,7 +99,8 @@ figure(1)
 grid on
 hold on
 plot3(x,y,z,'.');
-plot3(preprocessedTestPatterns(:,1), preprocessedTestPatterns(:,2), testCalculatedOutputs, 'rx');
+plot3(rawTestPatterns(:,1), rawTestPatterns(:,2), testCalculatedOutputs, 'rx');
+axis equal;
 
 
 

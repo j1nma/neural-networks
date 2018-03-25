@@ -1,4 +1,4 @@
-function w = backpropagationBatch(patterns, targets, activationFunction, hiddenLayers, learningRate, derivativeFunction, momentum) 
+function backpropagationBatch(patterns, targets, activationFunction, hiddenLayers, learningRate, derivativeFunction, momentum) 
 
 	global calculatedOutputs;
 
@@ -9,8 +9,9 @@ function w = backpropagationBatch(patterns, targets, activationFunction, hiddenL
 	layers = vertcat(hiddenLayers, numberOfOutputs);
 	numberOfLayers = rows(layers);
 
-	h = cell(numberOfPatterns, 1);
-	v = cell(numberOfPatterns, 1); 
+	global h;
+
+	global v;
 
 	global deltaW = cell(numberOfLayers, 1);
 
@@ -20,23 +21,27 @@ function w = backpropagationBatch(patterns, targets, activationFunction, hiddenL
 
 	t = 0;
 
-  	for p = 1:numberOfPatterns
+	for p = 1:numberOfPatterns
 
   		% 2. Choose a pattern and set it to be the entry layer
-		inputPattern = patterns(p,:);
-		target = targets(p,:);
+  		inputPattern = patterns(p,:);
+  		target = targets(p,:);
 
-		h{p} = cell(numberOfLayers, 1); 
-		v{p} = cell(numberOfLayers, 1); 
+  		h = cell(numberOfLayers, 1); 
+		v = cell(numberOfLayers, 1); 
 
-		calculatedOutputs(p, :) = computeOutputs(inputPattern, numberOfLayers, w, h{p}, v{p}, layers, activationFunction);
+		calculatedOutputs(p, :) = computeOutputs(inputPattern, numberOfLayers, w, layers, activationFunction);
+
+		computeAndAccumulateDeltas(deltaW, target, learningRate, inputPattern, numberOfLayers, w, h, v, layers, activationFunction, derivativeFunction, momentum, t);
 		
-		computeAndAccumulateDeltas(deltaW, target, learningRate, inputPattern, numberOfLayers, w, h{p}, v{p}, layers, activationFunction, derivativeFunction, momentum, t);
-
 		t += 1;
 
-  	endfor
+	endfor
 
-  	updateWeights(deltaW, w, numberOfLayers);
+	updateWeights(deltaW, numberOfLayers);
+
+	clear global h;
+  	clear global v;
+  	clear global deltaW;
 
 endfunction

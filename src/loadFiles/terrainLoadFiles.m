@@ -1,7 +1,5 @@
 addpath('./helperFunctions')
 
-terrainConfig
-
 derivatives
 
 errorFunctions

@@ -2,10 +2,6 @@ function ans = computeAndAccumulateDeltas(deltaW, target, learningRate, inputPat
 
   global deltaW;
 
-  global h;
-
-  global v;
-
   delta = cell(numberOfLayers, 1);
 
 		% 4. Calculate deltas between output layer and wanted output
@@ -20,46 +16,44 @@ function ans = computeAndAccumulateDeltas(deltaW, target, learningRate, inputPat
 
 			for i = 1:numberOfNeuronsInLayer
 
-               delta{m-1}(i) = derivativeFunction(h{m-1}(i)) * (w{m}(:, i+1)' * delta{m}');
+       delta{m-1}(i) = derivativeFunction(h{m-1}(i)) * (w{m}(:, i+1)' * delta{m}');
 
-           endfor
+     endfor
 
     		% 6. Compute delta for all weights
     		for i = 1:rows(w{m})
 
-                for j = 1:columns(w{m})
+          for j = 1:columns(w{m})
 
-                 if(t == 0)
-                     deltaW{m}(i,j) += learningRate * delta{m}(i) * [-1 v{m-1}](j);
-                 else
-                     momentumTerm = momentum * deltaW{m}(i,j);
-                       deltaW{m}(i,j) += (1-momentum)*learningRate * delta{m}(i) * [-1 v{m-1}](j) + momentumTerm;
-                       % deltaW{m}(i,j) += learningRate * delta{m}(i) * [-1 v{m-1}](j) + momentumTerm;
+           if(t == 0)
+             deltaW{m}(i,j) += learningRate * delta{m}(i) * [-1 v{m-1}](j);
+           else
+             momentumTerm = momentum * deltaW{m}(i,j);
+             deltaW{m}(i,j) += learningRate * delta{m}(i) * [-1 v{m-1}](j) + momentumTerm;
 
-                   endif
+           endif
 
-               endfor
-
-           endfor
+         endfor
 
        endfor
+
+     endfor
 
   		% 6. Update first weights
   		for i = 1:rows(w{1}) 
 
-              for j = 1:columns(w{1})
+        for j = 1:columns(w{1})
 
-               if(t == 0)
-                deltaW{1}(i,j) += learningRate * delta{1}(i) * inputPattern(j);
-            else
-                momentumTerm = momentum * deltaW{1}(i,j);
-                deltaW{1}(i,j) += (1-momentum)*learningRate * delta{1}(i) * inputPattern(j) + momentumTerm;
-                % deltaW{1}(i,j) += learningRate * delta{1}(i) * inputPattern(j) + momentumTerm;
+         if(t == 0)
+          deltaW{1}(i,j) += learningRate * delta{1}(i) * inputPattern(j);
+        else
+          momentumTerm = momentum * deltaW{1}(i,j);
+          deltaW{1}(i,j) += learningRate * delta{1}(i) * inputPattern(j) + momentumTerm;
 
-            endif 
+        endif 
 
-        endfor
+      endfor
 
     endfor
 
-endfunction
+  endfunction

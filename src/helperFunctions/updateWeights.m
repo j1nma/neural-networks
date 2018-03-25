@@ -1,4 +1,4 @@
-function ans = updateWeights(deltaW, w, numberOfLayers)
+function updateWeights(deltaW, numberOfLayers)
 	
 	global w;
 
