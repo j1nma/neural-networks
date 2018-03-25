@@ -39,7 +39,7 @@ function backpropagation(patterns, targets, activationFunction, hiddenLayers, le
 
 		delta = cell(numberOfLayers, 1);
 
-		delta{numberOfLayers} = arrayfun(derivativeFunction, h{numberOfLayers}) * (target - v{numberOfLayers});
+		delta{numberOfLayers} = arrayfun(derivativeFunction, v{numberOfLayers}) * (target - v{numberOfLayers});
 
 		% 5. Calculate deltas for previous layers propagating errors backwards for each neuron
 		% of each layer. m = M, M - 1, ..., 2
@@ -49,7 +49,7 @@ function backpropagation(patterns, targets, activationFunction, hiddenLayers, le
 
 			for i = 1:numberOfNeuronsInLayer
 				% First column of w is bias
-				delta{m-1}(i) = derivativeFunction(h{m-1}(i))* (delta{m} * w{m}(:, i+1));
+				delta{m-1}(i) = derivativeFunction(v{m-1}(i))* (delta{m} * w{m}(:, i+1));
 
 			endfor
 

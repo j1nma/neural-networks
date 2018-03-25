@@ -6,7 +6,7 @@ function ans = computeAndAccumulateDeltas(deltaW, target, learningRate, inputPat
 
 		% 4. Calculate deltas between output layer and wanted output
 
-		delta{numberOfLayers} = arrayfun(derivativeFunction, h{numberOfLayers}) * (target - v{numberOfLayers});
+		delta{numberOfLayers} = arrayfun(derivativeFunction, v{numberOfLayers}) * (target - v{numberOfLayers});
 
 		% 5. Calculate deltas (gradients) for previous layers propagating errors backwards for each neuron
 		% of each layer. m = M, M - 1, ..., 2
@@ -16,7 +16,7 @@ function ans = computeAndAccumulateDeltas(deltaW, target, learningRate, inputPat
 
 			for i = 1:numberOfNeuronsInLayer
 
-       delta{m-1}(i) = derivativeFunction(h{m-1}(i)) * (w{m}(:, i+1)' * delta{m}');
+       delta{m-1}(i) = derivativeFunction(v{m-1}(i)) * (w{m}(:, i+1)' * delta{m}');
 
      endfor
 
