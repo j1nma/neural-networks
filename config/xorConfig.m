@@ -12,7 +12,7 @@ epsilon = 0.025;
 
 trainingType = 'incremental';
 
-momentum = 0.0;
+momentum = 0.5;
 
 adaptativeLearningRate = 0;
 

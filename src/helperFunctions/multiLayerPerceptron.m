@@ -9,8 +9,6 @@ function w = mlp(patterns, targets, activationFunction, hiddenLayers, learningRa
 
 	global w;
 
-	global numberOfLayers;
-
 	if(isrow(hiddenLayers))
 		hiddenLayers = hiddenLayers';
 	endif
