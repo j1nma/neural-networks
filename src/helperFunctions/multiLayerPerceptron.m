@@ -87,10 +87,9 @@ function trainW = mlp(patterns, targets, activationFunction, hiddenLayers, learn
  		do
  			backpropagation(patterns, targets, activationFunction, hiddenLayers, 
  				learningRate, derivativeFunction, momentum);
-	
+
  			epochs += 1;
-	
- 			currentEpochError = mean(0.5 * ((targets - calculatedOutputs) .^ 2));
+			currentEpochError = sum(0.5*((targets-calculatedOutputs).^2))
  			epochError(epochs, :) = currentEpochError;
 
  			if(epochs == 1)

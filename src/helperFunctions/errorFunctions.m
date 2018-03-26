@@ -30,19 +30,25 @@ function a = limitError(targets, epsilon)
 		
 	until( a == 1 || i == rows(targets))
 
+	if (sum(0.5*((targets-calculatedOutputs).^2))<epsilon)
+		a =1;
+	else
+		a =0;
+	endif
+
 endfunction
 
 function error = totalError(targets)
 
-	global calculatedOutputs;
-
+	global calculatedOutputs
+	calculatedOutputs
 	errorVector = calcError(targets);
 	error = 0;
 	for i = 1 : errorVector
 		error += errorVector(i);
 	endfor
 
-	error = error/length(errorVector);
+	%error = error/length(errorVector);
 endfunction
 
 

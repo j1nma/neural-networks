@@ -1,28 +1,28 @@
-setSizePercentage = 100.0;
+setSizePercentage = 60.0;
 
 activationFunction = @tanh;
 
 hiddenLayers = [10 10];
 
-learningRate = 0.1;
+learningRate = 0.2;
 
-limitEpochs = 350;
+limitEpochs = 1000;
 
-epsilon = 0.01;
+epsilon = 0.1;
 
 trainingType = 'incremental';
 
-momentum = 0.7;
+momentum = 0;
 
-normalizedPatterns = 1;
+normalizedPatterns = 0;
 
 adaptativeLearningRate = 1;
 
 limitEpochsForLearningRate = 3;
 
-learningRateIncrement = 0.001; 
+learningRateIncrement = 0.01; 
 
-learningRateGeometricDecrement = 0.01;
+learningRateGeometricDecrement = 0.1;
 
 outputError = 0.1;
 
