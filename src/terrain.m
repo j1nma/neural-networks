@@ -17,7 +17,7 @@ terrainLoadFiles
 terrainConfig
 
 % Parse data
-filename = '../res/terrain01.data';
+filename = dataFile;
 delimiterIn = ' ';
 headerlinesIn = 1;
 A = importdata(filename, delimiterIn, headerlinesIn);
@@ -59,25 +59,22 @@ successRate = ((sum(abs(testTargets - testCalculatedOutputs) <= outputError))/ro
 
 printf('%s success rate: %d%%\n', trainingType, successRate);
 
-% x = testPatterns(:,2);
-% y = testPatterns(:,3);
-% z = testCalculatedOutputs;
+xt = testPatterns(:,2);
+yt = testPatterns(:,3);
+zt = testCalculatedOutputs;
+ti = -5:.1:5; 
+[XI,YI] = meshgrid(ti,ti);
+ZI = griddata(xt,yt,zt,XI,YI);
+figure(4)
+mesh(XI,YI,ZI)
+grid on
 
-% ti = -3:.1:3; 
-% [XI,YI] = meshgrid(ti,ti);
-% ZI = griddata(x,y,z,XI,YI);
-
-% mesh(XI,YI,ZI), hold
-% plot3(x,y,z,'gx')
-% grid on
-% axis equal;
-
-% figure(1)
-% grid on
-% hold on
-% plot3(x,y,z,'.');
-% plot3(rawTestPatterns(:,1), rawTestPatterns(:,2), testCalculatedOutputs, 'rx');
-% axis equal;
+figure(5)
+plot3(x,y,z,'.');
+hold on
+plot3(rawTestPatterns(:,1), rawTestPatterns(:,2), testCalculatedOutputs, 'rx');
+grid on
+axis equal;
 
 % END TEST %
 

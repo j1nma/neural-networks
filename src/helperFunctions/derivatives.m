@@ -31,21 +31,11 @@ function g = leakyRELUDerivative(z)
 
 endfunction
 
-function g = modifiedTanh(z)
-	g = 1.7159 * tanh((2/3)*z);
-endfunction
-
-function g = modifiedTanhDerivate(z)
-	g = (0.6667/1.7159) * (1.7159 - z)*(1.7159 + z);
-endfunction
-
 function f = setDerivative(activationFunction)
 	if(activationFunction == @tanh)
 		f = @tanhDerivate;
 	elseif (activationFunction == @exponentialSigmoid)
 		f = @exponentialSigmoidDerivate;
-	elseif (activationFunction == @modifiedTanh)
-		f = @modifiedTanhDerivate;
 	elseif (activationFunction == @leakyRELU)
 		f = @leakyRELUDerivative;
 	else
