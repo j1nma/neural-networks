@@ -71,11 +71,11 @@ function trainW = mlp(patterns, targets, activationFunction, hiddenLayers, learn
  			testOutputsError = mean(0.5 * ((testTargets - testOutputs) .^ 2));
  			epochTestAccuracy(epochs, :) = testOutputsError;
 	
-			title('Batch backpropagation');
  			plotEpochs(epochs, epochError, '-g', 3);
  			plotEpochs(epochs, epochLearningRate, 'o-c', 3);
-			% plotEpochs(epochs, epochTestAccuracy, 'm', 3);
+			plotEpochs(epochs, epochTestAccuracy, 'm', 3);
 
+			title('Batch backpropagation');
  			legend ({'epochError', 'epochLearningRate', 'testError'});
  			legend hide
  			legend show
@@ -123,11 +123,11 @@ function trainW = mlp(patterns, targets, activationFunction, hiddenLayers, learn
  			testOutputsError = mean(0.5 * ((testTargets - testOutputs) .^ 2));
  			epochTestAccuracy(epochs, :) = testOutputsError;
 	
-			title('Incremental backpropagation');
  			plotEpochs(epochs, epochError, '-b', 2);
  			plotEpochs(epochs, epochLearningRate, 'o-k', 2);
 			plotEpochs(epochs, epochTestAccuracy, 'm', 2);
 
+			title('Incremental backpropagation');
  			legend ({'epochError', 'epochLearningRate', 'testError'});
  			legend hide
  			legend show
