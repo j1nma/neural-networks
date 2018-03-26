@@ -1,8 +1,8 @@
 setSizePercentage = 100.0;
 
-activationFunction = @leakyRELU;
+activationFunction = @tanh;
 
-hiddenLayers = [15 15];
+hiddenLayers = [10 10];
 
 learningRate = 0.1;
 
@@ -16,7 +16,7 @@ momentum = 0.7;
 
 normalizedPatterns = 1;
 
-adaptativeLearningRate = 0;
+adaptativeLearningRate = 1;
 
 limitEpochsForLearningRate = 3;
 
