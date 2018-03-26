@@ -41,13 +41,10 @@ trainW = mlp(trainPatterns, trainTargets, activationFunction, hiddenLayers, lear
 	trainingType, momentum, adaptativeLearningRate, limitEpochsForLearningRate, 
 	learningRateIncrement, learningRateGeometricDecrement);
 
-whos global
-
-
 % TEST %
 testCalculatedOutputs = evaluateNetwork(testPatterns, testTargets, activationFunction, trainW, hiddenLayers)
 
-successRate = ((sum(abs(testTargets - testCalculatedOutputs) <= 0.15))/rows(testPatterns))*100;
+successRate = ((sum(abs(testTargets - testCalculatedOutputs) <= outputError))/rows(testPatterns))*100;
 
 printf('%s success rate: %d%%\n', trainingType, successRate);
 % END TEST %
@@ -55,20 +52,20 @@ printf('%s success rate: %d%%\n', trainingType, successRate);
 % OTHER TRAINING
 clear -global
 
-% xorConfig
+xorConfig
 
-% trainingType = 'batch';
+trainingType = 'batch';
 
-% trainW = mlp(trainPatterns, trainTargets, activationFunction, hiddenLayers, learningRate, limitEpochs, epsilon, 
-% 	trainingType, momentum, adaptativeLearningRate, limitEpochsForLearningRate, 
-% 	learningRateIncrement, learningRateGeometricDecrement);
+trainW = mlp(trainPatterns, trainTargets, activationFunction, hiddenLayers, learningRate, limitEpochs, epsilon, 
+	trainingType, momentum, adaptativeLearningRate, limitEpochsForLearningRate, 
+	learningRateIncrement, learningRateGeometricDecrement);
 
-% clear -global
+clear -global
 
-% % TEST %
-% testCalculatedOutputs = evaluateNetwork(testPatterns, testTargets, activationFunction, trainW, hiddenLayers)
+% TEST %
+testCalculatedOutputs = evaluateNetwork(testPatterns, testTargets, activationFunction, trainW, hiddenLayers)
 
-% successRate = ((sum(abs(testTargets - testCalculatedOutputs) <= 0.15))/rows(testPatterns))*100;
+successRate = ((sum(abs(testTargets - testCalculatedOutputs) <= outputError))/rows(testPatterns))*100;
 
-% printf('%s success rate: %d%%\n', trainingType, successRate);
-% % END TEST %
+printf('%s success rate: %d%%\n', trainingType, successRate);
+% END TEST %

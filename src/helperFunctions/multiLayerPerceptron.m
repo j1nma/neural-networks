@@ -2,7 +2,7 @@
 
 function trainW = mlp(patterns, targets, activationFunction, hiddenLayers, learningRate, limitEpochs, 
 	epsilon, trainingType, momentum, adaptativeLearningRate, limitEpochsForLearningRate, 
-	learningRateIncrement, learningRateGeometricDecrement)
+	learningRateIncrement, learningRateGeometricDecrement, testPatterns, testTargets)
 
 	if(isrow(hiddenLayers))
 		hiddenLayers = hiddenLayers';
@@ -36,73 +36,16 @@ function trainW = mlp(patterns, targets, activationFunction, hiddenLayers, learn
 			backpropagationBatch(patterns, targets, activationFunction, hiddenLayers, 
 				learningRate, derivativeFunction, momentum); 
 	
-			epochs += 1;
-	
-			currentEpochError = (sum((targets - calculatedOutputs) .^ 2))/rows(patterns);
-			epochError(epochs, :) = currentEpochError;
-	
-			if(adaptativeLearningRate == 1) 
-	
-				if(epochs == 1)
-					deltaError = 0;
-				else
-					deltaError =  currentEpochError - previousEpochError;
-				endif
-	
-				deltalr = deltaLearningRate(deltaError, learningRate, limitEpochsForLearningRate, 
-					learningRateIncrement, learningRateGeometricDecrement);
-	
-				learningRate += deltalr;
-	
-				if(deltaError > 0)
-					w = previousWeights;
-					momentum = 0;
-				else
-					previousWeights = w;
-				endif
-
-				epochdeltaError(epochs, :) = deltaError;
-	
-			endif
-
-			epochLearningRate(epochs, :) = learningRate;
-	
-			epochdeltaError(epochs, :) = deltaError;
-	
-			previousEpochError = currentEpochError;
-	
-			plotEpochs(epochs, epochError, 'o-g', 2);
-			plotEpochs(epochs, epochLearningRate, 'o-k', 2);
-			
-			if(adaptativeLearningRate == 1) 
-				plotEpochs(epochs, epochdeltaError, 'o-m', 2);
-			endif
-
- 			% 	epochAccuracy(epochs, :) = ((sum(abs(targets - calculatedOutputs) <= 0.3))/rows(patterns));
-				% epochAccuracy(epochs);
- 			% 	plotEpochs(epochs, epochAccuracy, 'k', 3);
-
- 			% Shuffle patterns
- 			patterns = randomSubset(patterns, 100.0);
-
- 		until(epochError(epochs) <= epsilon || epochs == limitEpochs)
-
- 	elseif (strcmp(trainingType,'incremental'))
-
- 		do
- 			backpropagation(patterns, targets, activationFunction, hiddenLayers, 
- 				learningRate, derivativeFunction, momentum);
-	
  			epochs += 1;
 	
  			currentEpochError = mean(0.5 * ((targets - calculatedOutputs) .^ 2));
  			epochError(epochs, :) = currentEpochError;
 
- 			% if(epochs == 1)
- 				% deltaError = 0;
- 			% else
+ 			if(epochs == 1)
+ 				deltaError = 0;
+ 			else
  				deltaError =  currentEpochError - previousEpochError;
- 			% endif
+ 			endif
 	
  			if(adaptativeLearningRate == 1) 
 	
@@ -117,46 +60,96 @@ function trainW = mlp(patterns, targets, activationFunction, hiddenLayers, learn
  				else
  					previousWeights = w;
  				endif
-
- 				epochdeltaError(epochs, :) = deltaError;
 	
  			endif
 
  			epochLearningRate(epochs, :) = learningRate;
 	
  			previousEpochError = currentEpochError;
+
+ 			testOutputs = evaluateNetwork(testPatterns, testTargets, activationFunction, w, hiddenLayers);
+ 			testOutputsError = mean(0.5 * ((testTargets - testOutputs) .^ 2));
+ 			epochTestAccuracy(epochs, :) = testOutputsError;
 	
+			title('Batch backpropagation');
+ 			plotEpochs(epochs, epochError, '-g', 3);
+ 			plotEpochs(epochs, epochLearningRate, 'o-c', 3);
+			% plotEpochs(epochs, epochTestAccuracy, 'm', 3);
+
+ 			legend ({'epochError', 'epochLearningRate', 'testError'});
+ 			legend hide
+ 			legend show
+
+ 		until(epochError(epochs) <= epsilon || epochs == limitEpochs)
+
+ 	elseif (strcmp(trainingType,'incremental'))
+
+ 		do
+ 			backpropagation(patterns, targets, activationFunction, hiddenLayers, 
+ 				learningRate, derivativeFunction, momentum);
+	
+ 			epochs += 1;
+	
+ 			currentEpochError = mean(0.5 * ((targets - calculatedOutputs) .^ 2));
+ 			epochError(epochs, :) = currentEpochError;
+
+ 			if(epochs == 1)
+ 				deltaError = 0;
+ 			else
+ 				deltaError =  currentEpochError - previousEpochError;
+ 			endif
+	
+ 			if(adaptativeLearningRate == 1) 
+	
+ 				deltalr = deltaLearningRate(deltaError, learningRate, limitEpochsForLearningRate, 
+ 					learningRateIncrement, learningRateGeometricDecrement);
+	
+ 				learningRate += deltalr;
+	
+ 				if(deltaError > 0)
+ 					w = previousWeights;
+ 					momentum = 0;
+ 				else
+ 					previousWeights = w;
+ 				endif
+	
+ 			endif
+
+ 			epochLearningRate(epochs, :) = learningRate;
+	
+ 			previousEpochError = currentEpochError;
+
+ 			testOutputs = evaluateNetwork(testPatterns, testTargets, activationFunction, w, hiddenLayers);
+ 			testOutputsError = mean(0.5 * ((testTargets - testOutputs) .^ 2));
+ 			epochTestAccuracy(epochs, :) = testOutputsError;
+	
+			title('Incremental backpropagation');
  			plotEpochs(epochs, epochError, '-b', 2);
  			plotEpochs(epochs, epochLearningRate, 'o-k', 2);
+			plotEpochs(epochs, epochTestAccuracy, 'm', 2);
 
- 			if(adaptativeLearningRate == 1) 
- 				plotEpochs(epochs, epochdeltaError, 'o-r', 2);
-			endif
- 			% 	epochAccuracy(epochs, :) = ((sum(abs(targets - calculatedOutputs) <= 0.3))/rows(patterns));
-				% epochAccuracy(epochs);
- 			% 	plotEpochs(epochs, epochAccuracy, 'm', 3);
-
- 			% Shuffle patterns
- 			% patterns = randomSubset(patterns, 100.0);
-
- 			w
+ 			legend ({'epochError', 'epochLearningRate', 'testError'});
+ 			legend hide
+ 			legend show
 
  		until(currentEpochError <= epsilon || epochs == limitEpochs)
-
- 		abs(targets - calculatedOutputs)
 
  	else
  		error('Wrong training type.');
  	endif
 
- 	trainW = w;
+ 	epochs
 
- 	whos global
+ 	learningRate
+
+ 	trainW = w;
 
 	clear global deltaW;
 	clear global t;
  	clear global w;
  	clear global k;
  	clear global calculatedOutputs;
+
+ 	whos global
 
  endfunction

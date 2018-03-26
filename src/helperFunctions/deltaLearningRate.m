@@ -10,7 +10,7 @@ function deltalr = deltaLearningRate(deltaError, learningRate, limitEpochsForLea
 		k = 0;
 
 		deltalr = -b*learningRate;
-		printf('%s learningRate by: %d\n', 'Decremented', deltalr);
+		% printf('%s learningRate by: %d\n', 'Decremented', deltalr);
 
 	elseif(deltaError < 0)
 
@@ -19,7 +19,7 @@ function deltalr = deltaLearningRate(deltaError, learningRate, limitEpochsForLea
 		if (k == limitEpochsForLearningRate)
 			deltalr = a;
 			k = 0;
-			printf('%s learningRate by: %d\n', 'Incremented', deltalr);
+			% printf('%s learningRate by: %d\n', 'Incremented', deltalr);
 		else
 			deltalr = 0;
 		endif
@@ -28,7 +28,7 @@ function deltalr = deltaLearningRate(deltaError, learningRate, limitEpochsForLea
 
 		k = 0;
 		deltalr = 0;
-		printf('%s\n', 'deltaError is 0. Nothing to be done.');
+		% printf('%s\n', 'deltaError is 0. Nothing to be done.');
 
 	endif
 

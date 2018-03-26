@@ -13,7 +13,7 @@ function backpropagationBatch(patterns, targets, activationFunction, hiddenLayer
 
 	global v;
 
-	global deltaW = cell(numberOfLayers, 1);
+	global deltaW;
 
 	for m = 1:numberOfLayers
 		deltaW{m} = zeros(size(w{m}));	

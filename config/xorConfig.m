@@ -4,22 +4,24 @@ activationFunction = @tanh;
 
 hiddenLayers = [2];
 
-learningRate = 0.1;
+learningRate = 0.001;
 
 limitEpochs = 6500;
 
-epsilon = 0.015;
+epsilon = 0.01;
 
 trainingType = 'incremental';
 
-momentum = 0.7;
+momentum = 0.5;
 
 normalizedPatterns = 0;
 
-adaptativeLearningRate = 0;
+adaptativeLearningRate = 1;
 
-limitEpochsForLearningRate = 5;
+limitEpochsForLearningRate = 10;
 
-learningRateIncrement = 0.4; 
+learningRateIncrement = 0.001; 
 
 learningRateGeometricDecrement = 0.2;
+
+outputError = 0.15;

@@ -12,6 +12,25 @@ function g = tanhDerivate(z)
 	g = 1 - (z*z);
 endfunction
 
+global leakyRELUParameter = 0.2;
+
+function g = leakyRELU(z)
+	global leakyRELUParameter;
+
+	g = max(leakyRELUParameter*z,z);
+endfunction
+
+function g = leakyRELUDerivative(z)
+	global leakyRELUParameter;
+
+	if(z < 0)
+		g = leakyRELUParameter;
+	elseif (z >= 0)
+		g = 1;
+	endif
+
+endfunction
+
 function g = modifiedTanh(z)
 	g = 1.7159 * tanh((2/3)*z);
 endfunction
@@ -27,6 +46,8 @@ function f = setDerivative(activationFunction)
 		f = @exponentialSigmoidDerivate;
 	elseif (activationFunction == @modifiedTanh)
 		f = @modifiedTanhDerivate;
+	elseif (activationFunction == @leakyRELU)
+		f = @leakyRELUDerivative;
 	else
 		error('activationFunction not found')
 	endif

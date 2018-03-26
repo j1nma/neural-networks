@@ -18,13 +18,7 @@ function ans = computeOutputs(pattern, numberOfLayers, w, layers, activationFunc
 					h{m}(i) = w{m}(i,:) * [-1 v{m-1}]';
 				endif
 
-				if (m == numberOfLayers)
-					v{m}(i) = tanh(h{m}(i));
-				else
-					v{m}(i) = activationFunction( h{m}(i) );
-				endif
-
-				% v{m}(i) = activationFunction( h{m}(i) );
+				v{m}(i) = activationFunction( h{m}(i) );
 
 			endfor
 
