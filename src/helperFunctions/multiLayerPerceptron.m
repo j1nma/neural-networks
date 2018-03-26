@@ -138,10 +138,6 @@ function trainW = mlp(patterns, targets, activationFunction, hiddenLayers, learn
  		error('Wrong training type.');
  	endif
 
- 	epochs
-
- 	learningRate
-
  	trainW = w;
 
 	clear global deltaW;
@@ -149,7 +145,5 @@ function trainW = mlp(patterns, targets, activationFunction, hiddenLayers, learn
  	clear global w;
  	clear global k;
  	clear global calculatedOutputs;
-
- 	whos global
 
  endfunction
