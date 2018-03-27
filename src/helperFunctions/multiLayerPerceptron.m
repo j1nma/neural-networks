@@ -67,7 +67,7 @@ function trainW = mlp(patterns, targets, activationFunction, hiddenLayers, learn
  			previousEpochError = currentEpochError;
 
  			testOutputs = evaluateNetwork(testPatterns, testTargets, activationFunction, w, hiddenLayers);
- 			testOutputsError = mean(0.5 * ((testTargets - testOutputs) .^ 2));
+ 			testOutputsError = sum(0.5 * ((testTargets - testOutputs) .^ 2));
  			epochTestAccuracy(epochs, :) = testOutputsError;
 	
  			plotEpochs(epochs, epochError, '-g', 3);
@@ -118,7 +118,7 @@ function trainW = mlp(patterns, targets, activationFunction, hiddenLayers, learn
  			previousEpochError = currentEpochError;
 
  			testOutputs = evaluateNetwork(testPatterns, testTargets, activationFunction, w, hiddenLayers);
- 			testOutputsError = mean(0.5 * ((testTargets - testOutputs) .^ 2));
+ 			testOutputsError = sum(0.5 * ((testTargets - testOutputs) .^ 2));
  			epochTestAccuracy(epochs, :) = testOutputsError;
 	
  			plotEpochs(epochs, epochError, '-b', 2);
