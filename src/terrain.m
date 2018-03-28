@@ -59,15 +59,20 @@ successRate = ((sum(abs(testTargets - testCalculatedOutputs) <= outputError))/ro
 
 printf('%s success rate: %d%%\n', trainingType, successRate);
 
-% xt = testPatterns(:,2);
-% yt = testPatterns(:,3);
-% zt = testCalculatedOutputs;
-% ti = -5:.1:5; 
-% [XI,YI] = meshgrid(ti,ti);
-% ZI = griddata(xt,yt,zt,XI,YI);
-% figure(4)
-% mesh(XI,YI,ZI)
-% grid on
+xt = testPatterns(:,2);
+yt = testPatterns(:,3);
+zt = testCalculatedOutputs;
+ti = -4:.1:4; 
+[XI,YI] = meshgrid(ti,ti);
+ZI = griddata(xt,yt,zt,XI,YI);
+
+ztt = testTargets;
+ZIT = griddata(xt,yt,ztt,XI,YI);
+figure(4)
+mesh(XI,YI,ZI) , hold
+mesh(XI,YI,ZIT, 'facecolor', 'none', 'edgecolor', 'c')
+grid on
+hold on
 
 figure(5)
 plot3(x,y,z,'.');

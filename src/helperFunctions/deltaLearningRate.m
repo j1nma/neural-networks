@@ -5,7 +5,7 @@ function deltalr = deltaLearningRate(deltaError, learningRate, limitEpochsForLea
 	a = learningRateIncrement; 
 	b = learningRateGeometricDecrement; 
 
-	if (deltaError > 0.002) 
+	if (deltaError > 0) 
 
 		k = 0;
 

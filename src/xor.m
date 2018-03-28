@@ -39,7 +39,7 @@ trainPatterns
 
 trainW = mlp(trainPatterns, trainTargets, activationFunction, hiddenLayers, learningRate, limitEpochs, epsilon, 
 	trainingType, momentum, adaptativeLearningRate, limitEpochsForLearningRate, 
-	learningRateIncrement, learningRateGeometricDecrement);
+	learningRateIncrement, learningRateGeometricDecrement, testPatterns, testTargets);
 
 % TEST %
 testCalculatedOutputs = evaluateNetwork(testPatterns, testTargets, activationFunction, trainW, hiddenLayers)
@@ -58,7 +58,7 @@ trainingType = 'batch';
 
 trainW = mlp(trainPatterns, trainTargets, activationFunction, hiddenLayers, learningRate, limitEpochs, epsilon, 
 	trainingType, momentum, adaptativeLearningRate, limitEpochsForLearningRate, 
-	learningRateIncrement, learningRateGeometricDecrement);
+	learningRateIncrement, learningRateGeometricDecrement, testPatterns, testTargets);
 
 clear -global
 
