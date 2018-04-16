@@ -1,0 +1,81 @@
+.root{
+	-fx-background-color:#FFFFFF;
+}
+
+.label{
+	-fx-font-size:15pt;
+	-fx-text-fill:#4F4F4F;
+	-fx-background-color:Transparent;
+    -fx-background-size:contain;
+    -fx-background-position: center center;
+    -fx-background-repeat: no-repeat;
+}
+
+#redButton{
+	-fx-font-size:1.6em;
+	-fx-text-fill:#4F4F4F;
+	-fx-background-color:Transparent;
+    -fx-background-size:contain;
+    -fx-background-position: center center;
+    -fx-background-repeat: no-repeat;
+    -fx-background-image: url('redButton.png');
+    
+    -fx-padding:3em;
+    
+}
+
+#blueButton{
+	-fx-font-size:1.6em;
+	-fx-text-fill:#4F4F4F;
+	-fx-background-color:Transparent;
+    -fx-background-size:contain;
+    -fx-background-position: center center;
+    -fx-background-repeat: no-repeat;
+    -fx-background-image: url('blueButton.png');
+    -fx-padding:3em;
+    
+}
+
+#redStone{
+	-fx-font-size:1.6em;
+	-fx-text-fill:#4F4F4F;
+	-fx-background-color:Transparent;
+    -fx-background-size:contain;
+    -fx-background-position: center center;
+    -fx-background-repeat: no-repeat;
+    -fx-background-image: url('redStone.png');
+    
+    -fx-padding:1em;
+    
+}
+
+#blueStone{
+	-fx-font-size:1.6em;
+	-fx-text-fill:#4F4F4F;
+	-fx-background-color:Transparent;
+    -fx-background-size:contain;
+    -fx-background-position: center center;
+    -fx-background-repeat: no-repeat;
+    -fx-background-image: url('blueStone.png');
+    -fx-padding:1em;
+    
+}
+
+#emptyStone{
+	-fx-font-size:1.6em;
+	-fx-text-fill:#4F4F4F;
+	-fx-background-color:Transparent;
+    -fx-background-size:contain;
+    -fx-background-position: center center;
+    -fx-background-repeat: no-repeat;
+    -fx-background-image: url('emptyStone.png');
+    -fx-padding:1em;
+    
+}
+
+#title{
+	-fx-background-image: url('title.png');
+    -fx-background-size:contain;
+    -fx-background-position: center center;
+    -fx-background-repeat: no-repeat;
+}
